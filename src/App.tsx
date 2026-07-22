@@ -62,8 +62,8 @@ function Home() {
     setActiveFaq(activeFaq === index ? null : index);
   };
 
-  // חיבור לידים: החליפו את YOUR_FORM_ID במזהה הטופס מחשבון ה-Formspree שלכם
-  const FORMSPREE_ID = "YOUR_FORM_ID";
+  // חיבור לידים לחשבון ה-Formspree של תומר
+  const FORMSPREE_ID = "mpqvjzzg";
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
