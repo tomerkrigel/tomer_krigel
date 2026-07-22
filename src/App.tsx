@@ -110,7 +110,7 @@ function Home() {
     },
     {
       step: "02",
-      title: "בניית תקציב חופש וספונטנות",
+      title: "בונים תקציב שנותן לנשום",
       subtitle: "אתם מחליטים מה חשוב לכם – אני נותן את המצפן",
       desc: "את התקציב אנחנו בונים ביחד, סביב שולחן אחד. אני מציג את התמונה המלאה – ואתם אלה שמחליטים מאיפה להוריד, כמה, ומה בשום אופן לא מוותרים עליו. בילויים, מסעדות, חופשות – מקבלים מקום מכובד בתקציב מראש, בלי ייסורי מצפון. זה התקציב שלכם, בקצב שלכם, לפי הערכים שלכם.",
       icon: Wallet,
@@ -150,7 +150,7 @@ function Home() {
   const faqData = [
     {
       q: "האם תכנון פיננסי אומר שנצטרך להצטמצם ולוותר על איכות החיים והנאות ההווה?",
-      a: "ממש לא! אני מתנגד לחלוטין לסגפנות, קיצוצים דרקוניים או ויתור על ההנאות שלכם. המטרה שלי היא להוביל אתכם לרווחה, איזון ושקט נפשי אמיתי. אני אעזור לכם לבנות תקציב חכם שמגדיר מראש תקציב לבילויים, מסעדות, חופשות וכוס הקפה של הבוקר – כדי שתוכלו ליהנות מהם בלב שלם ובלי רגשות אשם, ובמקביל אדאג שהכסף שלכם ינותב נכון לעתיד."
+      a: "ממש לא! אני לגמרי לא בעד להצטמצם או לוותר על ההנאות שלכם. המטרה שלי היא להוביל אתכם לרווחה, איזון ושקט נפשי אמיתי. אני אעזור לכם לבנות תקציב חכם שמגדיר מראש תקציב לבילויים, מסעדות, חופשות וכוס הקפה של הבוקר – כדי שתוכלו ליהנות מהם בלב שלם ובלי רגשות אשם, ובמקביל אדאג שהכסף שלכם ינותב נכון לעתיד."
     },
     {
       q: "מה אם מספרים, בירוקרטיה ואקסלים עושים לי כאב ראש וחרדה?",
@@ -221,28 +221,15 @@ function Home() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className="text-right lg:col-span-8 flex flex-col justify-center"
+              className="text-right lg:col-span-12 flex flex-col justify-center"
             >
-              {/* Welcoming, modern visual introduction element combined with a warm, personal layout */}
-              <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 mb-8 bg-white/5 border border-white/10 rounded-[2rem] p-4 sm:p-5 backdrop-blur-sm self-start w-full sm:w-auto">
-                <TomerImage size="md" className="shrink-0" />
-                <div className="space-y-1.5 text-center sm:text-right">
-                  <span className="text-[#C9AA67] font-heading font-extrabold text-xs tracking-wider uppercase bg-[#C9AA67]/10 px-3 py-1 rounded-full border border-[#C9AA67]/20 inline-block">
-                    היי, אני תומר 👋
-                  </span>
-                  <p className="text-[#F3E9DD]/90 text-sm sm:text-base font-light leading-relaxed">
-                    בלי הרצאות ובלי אקסלים מפחידים. רק סדר, בהירות ותוכנית שעובדת.
-                  </p>
-                </div>
-              </div>
-              
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-heading font-semibold text-white leading-[1.15] tracking-tight py-4 sm:py-6 mt-2">
+<h1 className="text-3xl sm:text-5xl md:text-6xl font-heading font-semibold text-white leading-[1.2] tracking-tight py-2 sm:py-6 mt-2">
                 אתם מרוויחים יפה. <br />
                 <span className="text-[#C9AA67]">אז למה בסוף החודש זה לא מרגיש ככה?</span>
               </h1>
               
-              <p className="text-lg sm:text-xl text-[#F3E9DD]/85 max-w-2xl font-light leading-relaxed mb-10 sm:mb-12">
-                ליווי פיננסי אישי 1:1 שעושה סדר, מחזיר הביתה כסף אבוד ובונה עתיד – בלי לוותר על הקפה, המסעדות והחופשות. בלי שיפוטיות. בלי סגפנות. בגובה העיניים.
+              <p className="text-base sm:text-xl text-[#F3E9DD]/85 max-w-2xl font-light leading-relaxed mb-6 sm:mb-12">
+                ליווי פיננסי אישי 1:1 שעושה סדר, מחזיר הביתה כסף אבוד ובונה עתיד – בלי לוותר על הקפה, על המסעדות ועל החופשות. בלי שיפוטיות ובלי לספור לכם כל שקל – בגובה העיניים.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 mb-10">
@@ -268,38 +255,62 @@ function Home() {
                  <div className="flex items-center gap-1.5"><CheckCircle2 size={14} className="text-[#C9AA67]" /> שיטה ממוקדת ללא חנק פיננסי</div>
                  <div className="flex items-center gap-1.5"><CheckCircle2 size={14} className="text-[#C9AA67]" /> ליווי אישי וקבוע בגובה העיניים</div>
               </div>
+
+              {/* Editorial-style personal introduction — the "meet Tomer" moment, premium and refined */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+                className="mt-10 sm:mt-16 relative"
+              >
+                {/* Editorial eyebrow with gold flanking lines */}
+                <div className="flex items-center justify-center gap-4 mb-6">
+                  <span className="h-px flex-1 max-w-[80px] bg-gradient-to-r from-transparent to-[#C9AA67]/40" />
+                  <span className="text-[#C9AA67] font-heading font-black text-[11px] tracking-[0.3em] uppercase">נעים להכיר</span>
+                  <span className="h-px flex-1 max-w-[80px] bg-gradient-to-l from-transparent to-[#C9AA67]/40" />
+                </div>
+
+                <div className="rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-10 relative overflow-hidden bg-gradient-to-br from-white/[0.08] to-white/[0.02] border border-[#C9AA67]/25 backdrop-blur-sm">
+                  <div className="absolute -top-16 -left-16 w-[260px] h-[260px] bg-[#C9AA67]/10 rounded-full blur-[60px] pointer-events-none" />
+                  <div className="absolute -bottom-20 -right-20 w-[240px] h-[240px] bg-[#6C8A7A]/20 rounded-full blur-[70px] pointer-events-none" />
+
+                  <div className="relative z-10 grid sm:grid-cols-[auto,1fr] gap-6 sm:gap-10 items-center">
+                    <div className="flex flex-col items-center gap-3">
+                      <TomerImage size="xl" />
+                      <div className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold tracking-wider bg-[#C9AA67]/10 border border-[#C9AA67]/35 text-[#C9AA67]">
+                        <span>✦</span><span>ליווי 1:1</span>
+                      </div>
+                    </div>
+
+                    <div className="text-center sm:text-right">
+                      <h3 className="text-2xl sm:text-3xl font-heading font-extrabold text-white leading-tight mb-1">
+                        תומר קריגל
+                      </h3>
+                      <p className="text-[#C9AA67] font-heading font-bold text-sm tracking-wide mb-5">
+                        מתכנן פיננסי בגובה העיניים
+                      </p>
+
+                      <div className="relative">
+                        <span className="hidden sm:block absolute -top-4 -right-2 text-6xl leading-none pointer-events-none select-none text-[#C9AA67]/20" style={{ fontFamily: "Georgia, serif" }}>"</span>
+                        <p className="text-[#F3E9DD]/90 text-base sm:text-lg font-light leading-relaxed relative z-10">
+                          אני לא מאמין בטבלאות אקסל מסובכות או בנזיפות על כוס הקפה שקניתם בבוקר. באתי לעזור לכם לעשות סדר אמיתי בכסף – בפשטות, בגובה העיניים, ובאובייקטיביות מוחלטת. המטרה שלי: שתוכלו ליהנות מההווה, ובו-זמנית לבנות ביטחון כלכלי חזק לעתיד.
+                        </p>
+                      </div>
+
+                      <div className="flex flex-wrap justify-center sm:justify-start items-center gap-x-5 gap-y-2 mt-6 pt-5 border-t border-[#C9AA67]/15">
+                        <span className="text-[#C9AA67] font-heading font-bold text-xs tracking-wider">שירות אישי</span>
+                        <span className="text-[#C9AA67]/40">◆</span>
+                        <span className="text-[#C9AA67] font-heading font-bold text-xs tracking-wider">100% אובייקטיביות</span>
+                        <span className="text-[#C9AA67]/40">◆</span>
+                        <span className="text-[#C9AA67] font-heading font-bold text-xs tracking-wider">בגובה העיניים</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
             </motion.div>
 
-            {/* Hero Right Trust Card (Personalized Headshot & Branding) */}
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="lg:col-span-4 hidden lg:flex flex-col items-center justify-center bg-white/5 border border-white/10 rounded-[2.5rem] p-8 backdrop-blur-md relative overflow-hidden text-center space-y-5"
-            >
-              <div className="absolute top-4 left-4 text-[10px] font-heading font-bold text-[#C9AA67]/40 tracking-widest">
-                EST. 2018
-              </div>
-              <div className="absolute top-4 right-4 opacity-30">
-                <KrigelLogo className="w-8 h-8" light={true} />
-              </div>
-              
-              <TomerImage size="lg" className="mt-4" />
-              
-              <div className="space-y-1.5 z-10">
-                <h3 className="text-xl font-heading font-extrabold text-white tracking-tight">תומר קריגל</h3>
-                <p className="text-xs font-heading font-bold text-[#C9AA67] tracking-wider uppercase">מתכנן פיננסי אישי לכלכלת המשפחה</p>
-                <p className="text-xs text-[#F3E9DD]/65 font-light leading-relaxed max-w-[240px] mx-auto">
-                  "אני עוזר לכם להחזיר את השליטה על התזרים החודשי, בלי לוותר על מה שעושה לכם טוב בהווה."
-                </p>
-              </div>
-
-              {/* Trust Metric pill */}
-              <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#C9AA67]/10 border border-[#C9AA67]/20 text-xs text-[#C9AA67] font-bold">
-                <Award size={12} />
-                <span>ליווי מקצועי 100% אובייקטיבי</span>
-              </div>
-            </motion.div>
+            {/* Hero Right side kept intentionally empty - the personal intro is now integrated into the left column below the H1 */}
           </div>
         </div>
       </section>
@@ -316,10 +327,10 @@ function Home() {
           >
             <span className="text-[#C9AA67] font-heading font-bold tracking-[0.2em] uppercase text-xs sm:text-sm block">נשמע מוכר?</span>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading font-extrabold text-[#2E4A43] leading-tight tracking-tight">
-              זו לא בעיה של הכנסה. זו בעיה של שיטה.
+              לא חסר לכם כסף. חסר לכם רק סדר.
             </h2>
             <p className="text-slate-600 max-w-2xl mx-auto text-base sm:text-lg font-light leading-relaxed">
-              אם אחד מהמשפטים האלה גורם לכם להנהן – אתם בדיוק במקום הנכון. וזו לא אשמתכם: פשוט אף אחד לא לימד אתכם את זה.
+              אם אחד מהמשפטים האלה גורם לכם להנהן – אתם בדיוק במקום הנכון. וזו לא אשמתכם.
             </p>
           </motion.div>
 
@@ -404,20 +415,6 @@ function Home() {
 
           </div>
 
-          {/* Empathy Statement Callout block */}
-          <motion.div 
-            {...fadeInUp}
-            className="mt-16 bg-[#2E4A43] text-white rounded-[2.5rem] p-8 md:p-12 shadow-xl relative overflow-hidden text-center border border-[#C9AA67]/30"
-          >
-            <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(#C9AA67_1.5px,transparent_1.5px)] [background-size:24px_24px] opacity-10" />
-            <span className="text-[#C9AA67] font-heading font-bold text-xs uppercase tracking-wider block mb-2">שחררו את רגשות האשם</span>
-            <h3 className="text-2xl sm:text-3xl font-heading font-extrabold max-w-2xl mx-auto leading-snug">
-              לגופים הפיננסיים משתלם שזה ירגיש מסובך. <br className="hidden sm:inline" /> התפקיד שלי הוא להפוך את זה לפשוט.
-            </h3>
-            <p className="text-[#F3E9DD]/80 text-sm sm:text-base font-light max-w-2xl mx-auto mt-4 leading-relaxed">
-              שיטה אחת פשוטה, שפה ברורה, וההגה עובר אליכם.
-            </p>
-          </motion.div>
         </div>
       </section>
 
@@ -431,7 +428,7 @@ function Home() {
             מיתוס או עובדה?
           </h2>
           <p className="max-w-2xl mx-auto text-base sm:text-lg font-light leading-relaxed mb-8 sm:mb-12 text-[#F3E9DD]/70">
-            כמה אמונות על כסף שכדאי לבדוק מחדש. לחצו על קלף כדי להפוך אותו.
+            כמה אמונות נפוצות על כסף שכדאי לבדוק מחדש. לחצו על כל קלף – ותגלו את הצד השני.
           </p>
 
           <div className="grid sm:grid-cols-2 gap-3 sm:gap-5">
@@ -474,90 +471,7 @@ function Home() {
         </div>
       </section>
 
-      {/* 3. THE SOLUTION & PHILOSOPHY (The Epiphany) */}
-      <section id="philosophy" className="py-14 sm:py-24 bg-[#F3E9DD]/15 relative overflow-hidden">
-        <div className="absolute top-1/2 left-0 -translate-y-1/2 w-96 h-96 bg-[#C9AA67]/5 rounded-full blur-[140px] pointer-events-none" />
-        
-        <div className="max-w-7xl mx-auto px-6 relative z-10">
-          <div className="grid lg:grid-cols-12 gap-12 items-center">
-            
-            {/* Epiphany Left Side (Tomer's Story & Headshot) */}
-            <motion.div 
-              {...fadeInUp}
-              className="lg:col-span-5 relative flex flex-col items-center"
-            >
-              <div className="w-full bg-[#2E4A43] rounded-[2.5rem] p-8 text-white flex flex-col items-center justify-between shadow-2xl relative overflow-hidden border border-[#A89C8A]/20 text-center">
-                <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(#C9AA67_1.5px,transparent_1.5px)] [background-size:24px_24px] opacity-10" />
-                <div className="absolute -bottom-10 -right-10 w-52 h-52 bg-[#C9AA67]/20 rounded-full blur-2xl" />
-                
-                <div className="relative z-10 flex flex-col items-center space-y-4 w-full">
-                  <span className="text-[#C9AA67] font-heading font-black text-xs tracking-widest uppercase">נעים להכיר 👋</span>
-                  
-                  <TomerImage size="xl" showBadge={false} />
-                  
-                  <div className="space-y-1">
-                    <h3 className="text-2xl font-heading font-extrabold text-white">תומר קריגל</h3>
-                    <p className="text-xs text-[#C9AA67] font-heading font-bold tracking-wider">מתכנן פיננסי בגובה העיניים</p>
-                  </div>
-                </div>
-
-                <div className="space-y-4 relative z-10 pt-6 mt-6 border-t border-white/10 w-full text-right">
-                  <p className="text-[#F3E9DD]/85 text-sm sm:text-base font-light leading-relaxed">
-                    "היי, אני תומר. אני לא מאמין בטבלאות אקסל מסובכות, קיצוצים דרקוניים או בנזיפות על כוס הקפה שקניתם בבוקר. באתי לעזור לכם לעשות סדר אמיתי בכסף שלכם, בפשטות ובגובה העיניים. המטרה שלי היא להראות לכם שאפשר ליהנות מהחיים כאן ועכשיו – ובו זמנית לבנות ביטחון כלכלי חזק קדימה, בשבילכם ובשביל המשפחה שלכם. הכל קורה בשיחה פתוחה, בלי שיפוטיות ובאובייקטיביות מוחלטת."
-                  </p>
-                  <div className="flex justify-center items-center gap-3 text-[#C9AA67] text-xs font-heading font-bold tracking-wider pt-2">
-                    <span>שירות בגובה העיניים</span>
-                    <span>•</span>
-                    <span>100% אובייקטיביות</span>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Epiphany Right Side (Benefits Copy) */}
-            <motion.div 
-              {...fadeInUp}
-              className="lg:col-span-7 space-y-6 text-right"
-            >
-              <span className="text-[#C9AA67] font-heading font-bold tracking-widest uppercase text-xs sm:text-sm block">איך אני משנה לכם את המציאות הכלכלית?</span>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading font-extrabold text-[#2E4A43] leading-tight tracking-tight">
-                הגישה של קריגל: תכנון פיננסי בגובה העיניים
-              </h2>
-              <p className="text-base sm:text-lg text-slate-600 font-light leading-relaxed">
-                שכחו מ'כלכלת המשפחה' הישנה של קיצוצים ונזיפות. תכנון נכון הוא לא ויתור על ההווה – הוא הדרך ליהנות ממנו בלב שקט, כשאתם יודעים שהעתיד מטופל.
-              </p>
-
-              {/* Unique Differentiators Grid */}
-              <div className="grid sm:grid-cols-3 gap-4 pt-6">
-                
-                {/* Value 1 */}
-                <div className="p-5 rounded-2xl bg-white border border-[#A89C8A]/15 shadow-sm space-y-2">
-                  <Heart className="text-[#C9AA67]" size={22} />
-                  <h4 className="font-heading font-extrabold text-[#2E4A43] text-sm sm:text-base">ליווי אישי 1:1 מולי</h4>
-                  <p className="text-xs text-slate-500 leading-relaxed font-light">אתם עובדים ישירות מולי לאורך כל הדרך. ללא עובדים זוטרים או פלסטרים זמניים.</p>
-                </div>
-
-                {/* Value 2 */}
-                <div className="p-5 rounded-2xl bg-white border border-[#A89C8A]/15 shadow-sm space-y-2">
-                  <ShieldCheck className="text-[#C9AA67]" size={22} />
-                  <h4 className="font-heading font-extrabold text-[#2E4A43] text-sm sm:text-base">אובייקטיביות מוחלטת שלי</h4>
-                  <p className="text-xs text-slate-500 leading-relaxed font-light">אני לא מוכר מוצרים של בנקים או ביטוחים, אלא מייצג אך ורק את האינטרס הטהור שלכם.</p>
-                </div>
-
-                {/* Value 3 */}
-                <div className="p-5 rounded-2xl bg-white border border-[#A89C8A]/15 shadow-sm space-y-2">
-                  <Users className="text-[#C9AA67]" size={22} />
-                  <h4 className="font-heading font-extrabold text-[#2E4A43] text-sm sm:text-base">זמינות ישירה אלי בטלפון</h4>
-                  <p className="text-xs text-slate-500 leading-relaxed font-light">אין מרכזיות או מזכירות – יש לכם קו פתוח ישירות אלי לכל שאלה, התלבטות או החלטה פיננסית.</p>
-                </div>
-
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* 4. THE INTERACTIVE ROADMAP (The 4-Step Methodology) */}
+      {/* 3. THE INTERACTIVE ROADMAP (The 4-Step Methodology) */}
       <section id="process" className="py-14 sm:py-24 bg-white relative overflow-hidden border-t border-b border-[#A89C8A]/20">
         <div className="absolute top-0 right-10 w-96 h-96 bg-[#F3E9DD]/30 rounded-full blur-[120px] pointer-events-none" />
         <div className="absolute bottom-0 left-10 w-96 h-96 bg-[#C9AA67]/5 rounded-full blur-[120px] pointer-events-none" />
@@ -790,10 +704,10 @@ function Home() {
               <div className="lg:col-span-6 space-y-6 text-right">
                 <span className="text-[#C9AA67] font-heading font-bold text-xs sm:text-sm tracking-widest uppercase block">הצעד הראשון שלכם מתחיל כאן</span>
                 <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading font-extrabold text-white leading-tight">
-                  הצעד הראשון לוקח 20 דקות ✦
+                  נעים להכיר ✦ בואו נעשה סדר יחד
                 </h2>
                 <p className="text-[#F3E9DD]/80 text-base sm:text-lg font-light leading-relaxed">
-                  שיחת אבחון קצרה, חינם ובלי לחץ. נכיר, נזהה יחד את שלושת 'החורים השקופים' הגדולים שלכם – ותצאו ממנה עם תובנה אחת שווה, גם אם לא נמשיך יחד.
+                  שיחת היכרות קצרה של 20 דקות, חינם ובלי התחייבות. נכיר, ואצביע לכם על שלוש נקודות שעליהן שווה לעבוד. גם אם לא נמשיך יחד – תצאו עם ערך.
                 </p>
                 
                 <div className="space-y-4 pt-4 border-t border-white/5">
@@ -843,7 +757,7 @@ function Home() {
                     </motion.div>
                   ) : (
                     <form onSubmit={handleFormSubmit} className="space-y-4">
-                      <h3 className="text-xl sm:text-2xl font-heading font-extrabold text-[#2E4A43] text-center mb-6">שיחה אחת. בלי התחייבות. הרבה בהירות.</h3>
+                      <h3 className="text-xl sm:text-2xl font-heading font-extrabold text-[#2E4A43] text-center mb-6">שיחה אחת · בלי התחייבות · הרבה בהירות</h3>
                       
                       {/* Name input */}
                       <div className="space-y-1.5">
@@ -881,7 +795,7 @@ function Home() {
                           className="w-full px-5 py-3.5 rounded-xl bg-slate-50 border border-slate-200 text-[#2E4A43] focus:outline-none focus:ring-2 focus:ring-[#C9AA67] focus:border-[#C9AA67] transition-all text-sm font-light appearance-none bg-[url('data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%232E4A43%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')] bg-[length:16px_16px] bg-[left_16px_center] bg-no-repeat text-right pr-5"
                         >
                           <option>הכסף נעלם ולא ברור לאן</option>
-                          <option>רוצים לייצר סדר ותקציב חכם בלי סגפנות</option>
+                          <option>רוצים לייצר סדר ותקציב חכם בלי להצטמצם</option>
                           <option>רוצים לחסוך נכון ובטוח לעתיד הילדים</option>
                           <option>מיפוי, הוזלת ביטוחים ואופטימיזציית פנסיה</option>
                           <option>אחר / שילוב של מספר דברים</option>

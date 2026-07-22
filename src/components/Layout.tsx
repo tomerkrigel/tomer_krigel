@@ -150,7 +150,6 @@ export default function Layout({ children, currentPageName = "Home" }: LayoutPro
     { name: "ראשי", page: "Home", section: null },
     { name: "נשמע מוכר?", page: "Home", section: "pain" },
     { name: "מיתוס או עובדה?", page: "Home", section: "myths" },
-    { name: "הגישה שלי", page: "Home", section: "philosophy" },
     { name: "איך זה עובד", page: "Home", section: "process" },
     { name: "שאלות ותשובות", page: "Home", section: "faq" },
     { name: "יצירת קשר", page: "Home", section: "contact" },
@@ -433,7 +432,7 @@ export default function Layout({ children, currentPageName = "Home" }: LayoutPro
       <div dir="ltr" className="fixed bottom-6 left-6 z-50 group flex items-center gap-3">
         {/* Floating Button */}
         <a
-          href="https://wa.me/972543291703?text=%D7%94%D7%99%20%D7%AA%D7%95%D7%9E%D7%A8,%20%D7%94%D7%92%D7%A2%D7%AA%D7%99%20%D7%9E%D7%94%D7%90%D7%AA%D7%A8%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%94%D7%AA%D7%99%D7%99%D7%A2%D7%AA"
+          href="https://wa.me/972543291703?text=%D7%94%D7%99%D7%99%20%D7%AA%D7%95%D7%9E%D7%A8%2C%20%D7%94%D7%92%D7%A2%D7%AA%D7%99%20%D7%9E%D7%94%D7%90%D7%AA%D7%A8%20%D7%95%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%94%D7%AA%D7%99%D7%99%D7%A2%D7%A5%20%F0%9F%99%8F"
           target="_blank"
           rel="noopener noreferrer"
           className="w-14 h-14 rounded-full bg-[#2E4A43] hover:bg-[#233933] border-2 border-[#C9AA67] text-[#C9AA67] flex items-center justify-center shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 relative"
