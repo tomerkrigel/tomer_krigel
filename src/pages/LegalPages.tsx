@@ -8,12 +8,12 @@ import { ChevronRight } from "lucide-react";
 function LegalShell({ title, children }: { title: string; children: React.ReactNode }) {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   return (
-    <div className="pt-32 sm:pt-40 pb-16 sm:pb-24 min-h-screen bg-[#F3E9DD]/15" dir="rtl">
+    <div className="pt-12 sm:pt-20 pb-16 sm:pb-24 bg-[#F6EFE6]" dir="rtl">
       <div className="max-w-3xl mx-auto px-6">
-        <Link to="/" className="inline-flex items-center gap-1 text-sm text-[#6C8A7A] hover:text-[#C9AA67] transition-colors mb-6">
+        <Link to="/" className="inline-flex items-center gap-1 text-sm text-[#7A5C24] hover:text-[#0B1714] transition-colors mb-6">
           <ChevronRight size={16} /> חזרה לדף הבית
         </Link>
-        <h1 className="text-3xl sm:text-4xl font-heading font-extrabold text-[#2E4A43] mb-8">{title}</h1>
+        <h1 className="font-serif font-light text-4xl sm:text-6xl leading-none tracking-tight text-[#0B1714] mb-10">{title}</h1>
         <div className="space-y-6 text-slate-700 leading-relaxed text-sm sm:text-base font-light [&_h2]:font-heading [&_h2]:font-bold [&_h2]:text-[#2E4A43] [&_h2]:text-lg [&_h2]:mt-8 [&_h2]:mb-2">
           {children}
         </div>
@@ -28,7 +28,7 @@ export function PrivacyPolicy() {
     <LegalShell title="מדיניות פרטיות">
       <p>הפרטיות שלכם חשובה לנו. מסמך זה מסביר איזה מידע נאסף באתר של קריגל תכנון פיננסי ("האתר"), כיצד הוא נשמר ולאילו מטרות הוא משמש.</p>
       <h2>איזה מידע נאסף</h2>
-      <p>בעת מילוי טופס יצירת הקשר נאספים הפרטים שמסרתם מרצונכם: שם, מספר טלפון ותיאור כללי של האתגר הפיננסי שלכם. בנוסף, ייתכן שנאסף מידע סטטיסטי אנונימי על השימוש באתר (כגון עמודים שנצפו) באמצעות כלי אנליטיקה.</p>
+      <p>בעת מילוי טופס יצירת הקשר נאספים הפרטים שמסרתם מרצונכם: שם, מספר טלפון ותיאור כללי של האתגר הפיננסי שלכם (כולל הוצאות שבחרתם לסמן באתר). בבקשה לקבלת מדריך נאספת כתובת האימייל שמסרתם, לצורך שליחת המדריך. בנוסף, ייתכן שנאסף מידע סטטיסטי אנונימי על השימוש באתר (כגון עמודים שנצפו) באמצעות כלי אנליטיקה.</p>
       <h2>למה המידע משמש</h2>
       <p>הפרטים משמשים אך ורק לצורך חזרה אליכם לתיאום שיחת אבחון ולמתן השירות. הפרטים אינם נמכרים, אינם מועברים לצדדים שלישיים למטרות שיווק, ואינם משמשים לדיוור שלא ביקשתם.</p>
       <h2>שמירת המידע ואבטחתו</h2>
