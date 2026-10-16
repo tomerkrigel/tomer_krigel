@@ -4,6 +4,7 @@
 @theme {
   --font-sans: "Heebo", "Assistant", ui-sans-serif, system-ui, sans-serif;
   --font-heading: "Assistant", "Heebo", sans-serif;
+  --font-serif: "Frank Ruhl Libre", Georgia, serif;
   
   --color-primary: #2E4A43;
   --color-primary-hover: #233933;
