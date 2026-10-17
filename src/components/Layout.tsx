@@ -31,12 +31,19 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <KrigelLogo className="w-[38px] h-[38px] sm:w-[46px] sm:h-[46px]" />
             <span className="font-serif text-[19px] sm:text-[22px] font-medium text-[#F3E9DD]">קריגל פיננסיים</span>
           </Link>
-          <nav className="flex items-center gap-7">
+          <nav className="flex items-center gap-3 sm:gap-7">
             {nav.map((item) => (
               <Link key={item.to} to={item.to} className="hidden lg:inline text-[15px] text-[#D9D2C6] hover:text-[#C9A467] transition-colors whitespace-nowrap">
                 {item.name}
               </Link>
             ))}
+            <a
+              href="https://app.krigelfinance.co.il"
+              className="inline-flex items-center gap-1.5 border border-[#C9A467]/45 text-[#F3E9DD] px-3 sm:px-4 py-2 sm:py-2.5 text-[13px] sm:text-[14px] whitespace-nowrap hover:border-[#C9A467] transition-colors"
+            >
+              <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="5" y="11" width="14" height="10" rx="2" /><path d="M8 11V7a4 4 0 0 1 8 0v4" /></svg>
+              כניסת לקוחות
+            </a>
             <Link
               to="/#contact"
               className="bg-[#C9A467] text-[#0B1714] border border-[#C9A467] px-4 sm:px-6 py-2.5 sm:py-3 text-[14px] sm:text-[15px] font-bold whitespace-nowrap hover:bg-[#E0C083] transition-colors"
@@ -66,6 +73,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <a href="mailto:krigeltomer@gmail.com" className="hover:text-[#C9A467]">krigeltomer@gmail.com</a>
               {" · "}
               <a href={WA_HREF} target="_blank" rel="noopener noreferrer" className="hover:text-[#C9A467]">וואטסאפ</a>
+              {" · "}
+              <a href="https://app.krigelfinance.co.il" className="text-[#C9A467] hover:underline">כניסת לקוחות</a>
             </span>
             <span className="flex gap-6">
               <Link to="/privacy" className="underline hover:text-[#C9A467]">מדיניות פרטיות</Link>

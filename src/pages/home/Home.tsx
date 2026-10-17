@@ -1679,6 +1679,10 @@ export default class Home extends React.Component<Record<string, never>, any> {
               <a className="nav hide-sm" href="#meetings">
                 4 הפגישות
               </a>
+              <a href="https://app.krigelfinance.co.il" style={{ display: "inline-flex", alignItems: "center", gap: "7px", padding: "10px 16px", fontSize: "14px", color: "#F3E9DD", border: "1px solid rgba(201,164,103,0.45)", textDecoration: "none", whiteSpace: "nowrap" }}>
+                <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="5" y="11" width="14" height="10" rx="2" /><path d="M8 11V7a4 4 0 0 1 8 0v4" /></svg>
+                כניסת לקוחות
+              </a>
               <a className="gold hide-sm" href="#contact" style={{ padding: "12px 22px", fontSize: "15px", fontWeight: "700" }}>
                 שיחת היכרות
               </a>
@@ -3056,6 +3060,10 @@ export default class Home extends React.Component<Record<string, never>, any> {
                 {" · "}
                 <a href="mailto:krigeltomer@gmail.com" style={{ color: "#9DB0A8", textDecoration: "none" }}>
                   krigeltomer@gmail.com
+                </a>
+                {" · "}
+                <a href="https://app.krigelfinance.co.il" style={{ color: "#C9A467", textDecoration: "none" }}>
+                  כניסת לקוחות
                 </a>
               </span>
               <span style={{ display: "flex", gap: "24px" }}>
