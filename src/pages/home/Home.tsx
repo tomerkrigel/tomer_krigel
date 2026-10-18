@@ -1640,9 +1640,6 @@ export default class Home extends React.Component<Record<string, never>, any> {
               <a className="nav hide-sm" href="#me">
                 נעים להכיר
               </a>
-              <a className="nav hide-sm" href="#method">
-                נסו בעצמכם
-              </a>
               <a className="nav hide-sm" href="#faq">
                 {v.navFaq}
               </a>
@@ -2428,170 +2425,6 @@ export default class Home extends React.Component<Record<string, never>, any> {
             </div>
           </div>
         </section>
-        {/* ================= YOUR TURN: SWIPE TO SORT ================= */}
-        <section id="method" style={{ background: "#0B1714", position: "relative", overflow: "hidden" }}>
-          <svg aria-hidden="true" width="100%" height="100%" style={{ position: "absolute", inset: "0", opacity: "0.05", pointerEvents: "none" }}>
-            <filter id="grainB">
-              <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch" />
-            </filter>
-            <rect width="100%" height="100%" filter="url(#grainB)" />
-          </svg>
-          <div className="pad sec" style={{ position: "relative", maxWidth: "1280px", margin: "0 auto", padding: "160px 48px" }}>
-            <div className="rv" style={{ display: "flex", flexWrap: "wrap", gap: "24px 72px", alignItems: "end", marginBottom: "64px" }}>
-              <div style={{ flex: "1 1 460px", display: "flex", flexDirection: "column", gap: "14px" }}>
-                <span style={{ fontSize: "13px", letterSpacing: "0.16em", color: "#C9A467", fontWeight: "500" }}>
-                  עכשיו תורכם
-                </span>
-                <h2 className="h2 serif" style={{ margin: "0", fontWeight: "300", fontSize: "80px", lineHeight: "0.98", letterSpacing: "-0.02em" }}>
-                  {"מיינו את "}
-                  <span style={{ fontWeight: "700", color: "#C9A467" }}>
-                    החודש.
-                  </span>
-                </h2>
-              </div>
-              <p style={{ flex: "1 1 380px", margin: "0", fontSize: "18px", lineHeight: "1.75", color: "#B9C7C1", fontWeight: "300" }}>
-                שלוש קטגוריות – קבועה, גמישה, לבחינה. החליקו כל כרטיס לכיוון שנראה לכם נכון, או לחצו על הכפתורים. על כל הוצאה תקבלו ממני חומר למחשבה.
-              </p>
-            </div>
-            <div className="sw-stage" ref={v.stageRef} data-zone="">
-              {(v.zones || []).map((z, $index) => (
-                <React.Fragment key={$index}>
-                  <div className={z?.cls}>
-                    <span style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: "8px" }}>
-                      <span className="serif" style={css(z?.nameStyle)}>
-                        {z?.name}
-                      </span>
-                      <span style={{ fontSize: "15px", color: "#9DB0A8" }}>
-                        {z?.count}
-                      </span>
-                    </span>
-                    <span className="zhint" style={{ fontSize: "12px", color: "#8DA29A", letterSpacing: "0.04em" }}>
-                      {z?.hint}
-                    </span>
-                    <div style={{ display: "flex", flexDirection: "column", marginTop: "6px" }}>
-                      {(z?.chips || []).map((zc, $index) => (
-                        <React.Fragment key={$index}>
-                          <span style={css(zc?.style)}>
-                            {zc?.label}
-                          </span>
-                        </React.Fragment>
-                      ))}
-                    </div>
-                    <span className="zdrop" style={css(z?.dropStyle)}>
-                      גררו לכאן
-                    </span>
-                    {" "}
-                  </div>
-                </React.Fragment>
-              ))}
-              <div className="deck">
-                {v.deckActive ? (
-                  <>
-                    {(v.peeks || []).map((pk, $index) => (
-                      <React.Fragment key={$index}>
-                        <div className="peek" style={css(pk?.style)}>
-                          {" "}
-                          <div className="rcpt-lg" style={css(pk?.face)}>
-                            <span />
-                            <span className="serif deck-label" style={{ fontSize: "44px", lineHeight: "1.05", color: "#3F4F4A" }}>
-                              {pk?.label}
-                            </span>
-                            <span />
-                          </div>
-                          {" "}
-                        </div>
-                      </React.Fragment>
-                    ))}
-                    <div className="swcard" ref={v.cardRef} onPointerDown={v.cardDown} onPointerMove={v.cardMove} onPointerUp={v.cardUp} onPointerCancel={v.cardUp} role="group" aria-label={v.cardAria}>
-                      <div className="rcpt-lg" style={css(v.cardFace)}>
-                        <span style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "12px", letterSpacing: "0.12em", color: "#7A5C24" }}>
-                          <span>
-                            {v.cardCount}
-                          </span>
-                          <span style={css(v.cardTagStyle)}>
-                            שלכם
-                          </span>
-                        </span>
-                        <span className="serif deck-label" style={{ fontSize: "46px", lineHeight: "1.05", color: "#0B1714" }}>
-                          {v.cardLabel}
-                        </span>
-                        {" "}
-                        <span style={{ fontSize: "13px", color: "#5B6B66" }}>
-                          → קבועה · ↑ לבחינה · גמישה ←
-                        </span>
-                        {" "}
-                      </div>
-                    </div>
-                  </>
-                ) : null}
-                {" "}
-                {v.deckDone ? (
-                  <>
-                    <div style={{ position: "absolute", inset: "0", background: "#12261F", border: "1px solid rgba(201,164,103,0.35)", padding: "26px", display: "flex", flexDirection: "column", justifyContent: "space-between", gap: "12px" }}>
-                      <span style={{ fontSize: "12px", letterSpacing: "0.14em", color: "#C9A467" }}>
-                        סיימתם לסווג
-                      </span>
-                      <span className="serif" style={{ fontSize: "28px", lineHeight: "1.2", color: "#F3E9DD" }}>
-                        זו התמונה הראשונה של החודש שלכם.
-                      </span>
-                      <span style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                        <span style={{ display: "flex", height: "10px", gap: "2px", background: "#16302A" }}>
-                          {(v.endSegs || []).map((es, $index) => (
-                            <React.Fragment key={$index}>
-                              <span style={css(es?.style)} />
-                            </React.Fragment>
-                          ))}
-                        </span>
-                        <span style={{ fontSize: "13px", color: "#9DB0A8" }}>
-                          {v.endText}
-                        </span>
-                      </span>
-                      <span style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-                        <button className="ghost" onClick={v.deckRestart} style={{ padding: "11px 16px", fontSize: "14px" }}>
-                          סיבוב נוסף ↻
-                        </button>
-                        <a className="gold" href="#contact" style={{ padding: "11px 16px", fontSize: "14px", fontWeight: "700" }}>
-                          לעשות את זה עם המספרים שלכם
-                        </a>
-                      </span>
-                    </div>
-                  </>
-                ) : null}
-              </div>
-              <div className="sw-btns" style={css(v.btnStyle)}>
-                {" "}
-                <button className="swbtn" onClick={v.pick0} style={{ borderColor: "#6E9A82" }}>
-                  → קבועה
-                </button>
-                {" "}
-                <button className="swbtn" onClick={v.pick2} style={{ borderColor: "#D08A68" }}>
-                  ↑ לבחינה
-                </button>
-                {" "}
-                <button className="swbtn" onClick={v.pick1} style={{ borderColor: "#C9A467" }}>
-                  גמישה ←
-                </button>
-                {" "}
-              </div>
-              <div aria-live="polite" style={css(v.fftStyle)}>
-                <span style={{ width: "42px", height: "42px", borderRadius: "50%", overflow: "hidden", border: "1px solid #C9A467", flex: "0 0 auto", display: "block" }}>
-                  <img loading="lazy" decoding="async" src="/tomer.jpg" alt="" style={{ display: "block", width: "100%", height: "116%", objectFit: "cover", objectPosition: "50% 0%" }} />
-                </span>
-                <span style={{ display: "flex", flexDirection: "column", gap: "4px", minWidth: "0" }}>
-                  <span style={{ fontSize: "12px", letterSpacing: "0.12em", color: "#C9A467" }}>
-                    {"חומר למחשבה · "}{v.fftLabel}
-                  </span>
-                  <span style={{ fontSize: "15px", color: "#F3E9DD", fontWeight: "600" }}>
-                    {v.fftHead}
-                  </span>
-                  <span style={{ fontSize: "15px", lineHeight: "1.6", color: "#B9C7C1" }}>
-                    {v.fftText}
-                  </span>
-                </span>
-              </div>
-            </div>
-          </div>
-        </section>
         {/* ================= MYTHS ================= */}
         <section style={{ background: "#F6EFE6", color: "#0B1714" }}>
           <div className="pad sec" style={{ maxWidth: "1280px", margin: "0 auto", padding: "160px 48px" }}>
@@ -2683,11 +2516,10 @@ export default class Home extends React.Component<Record<string, never>, any> {
             </div>
           </div>
         </section>
-        {/* ================= FOUNDING TICKET + BOOK ================= */}
+        {/* ================= FOUNDING TICKET (shown once content.ts has seats + perks) ================= */}
+        {v.hasFounding ? (
         <section style={{ background: "#0B1714" }}>
           <div className="pad sec" style={{ maxWidth: "1280px", margin: "0 auto", padding: "160px 48px", display: "flex", flexWrap: "wrap", gap: "32px", alignItems: "stretch" }}>
-            {v.hasFounding ? (
-              <>
                 <div className="ticket" style={{ flex: "1 1 500px", background: "#C9A467", color: "#0B1714", display: "flex", minHeight: "360px" }}>
                   <div className="tick-body" style={{ flex: "1 1 auto", padding: "52px 60px", display: "flex", flexDirection: "column", gap: "18px", justifyContent: "center" }}>
                     <span style={{ fontSize: "13px", letterSpacing: "0.2em", fontWeight: "600" }}>
@@ -2717,74 +2549,9 @@ export default class Home extends React.Component<Record<string, never>, any> {
                   </div>
                   <div className="shine" aria-hidden="true" />
                 </div>
-              </>
-            ) : null}
-            <div className="guide-card" style={{ flex: "1 1 500px", background: "#F6EFE6", color: "#0B1714", padding: "52px", display: "flex", flexWrap: "wrap", gap: "48px", alignItems: "center" }}>
-              <div className="book-stage" aria-hidden="true" style={{ flex: "0 0 180px", height: "250px", perspective: "1000px", margin: "0 auto" }}>
-                <div className="book">
-                  <div style={{ position: "absolute", top: "4px", bottom: "4px", left: "0", width: "16px", transformOrigin: "left center", transform: "rotateY(-90deg)", background: "#E9DFCE", borderTop: "1px solid #DCCFBC", borderBottom: "1px solid #DCCFBC" }} />
-                  <div style={{ position: "absolute", inset: "0", background: "#2E4A43", padding: "24px 20px", display: "flex", flexDirection: "column", justifyContent: "space-between", color: "#F3E9DD", boxShadow: "-18px 24px 36px rgba(11,23,20,0.38)", borderRight: "10px solid #1F3631" }}>
-                    <span style={{ fontSize: "9px", letterSpacing: "0.2em", color: "#C9A467" }}>
-                      קריגל פיננסיים
-                    </span>
-                    <span className="serif" style={{ fontSize: "27px", lineHeight: "1.12" }}>
-                      קניית רכב
-                      <br />
-                      בדרך
-                      <br />
-                      החכמה
-                    </span>
-                    <span style={{ display: "flex", gap: "4px" }}>
-                      <span style={{ flex: "1", height: "4px", background: "#6E9A82" }} />
-                      <span style={{ flex: "1", height: "4px", background: "#C9A467" }} />
-                      <span style={{ flex: "1", height: "4px", background: "#C47A5A" }} />
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div style={{ flex: "1 1 240px", display: "flex", flexDirection: "column", gap: "14px" }}>
-                <span style={{ fontSize: "13px", letterSpacing: "0.14em", color: "#7A5C24", fontWeight: "500" }}>
-                  מדריך חינמי · 7 עמודים
-                </span>
-                <h3 className="serif" style={{ margin: "0", fontWeight: "400", fontSize: "36px", lineHeight: "1.12" }}>
-                  מזומן, הלוואה
-                  <br />
-                  או ליסינג?
-                </h3>
-                <p style={{ margin: "0", fontSize: "15px", lineHeight: "1.75", color: "#3F4F4A", fontWeight: "300" }}>
-                  השוואה מלאה בין שלושת המסלולים, על בסיס זהה של 36 חודשים.
-                </p>
-                {v.guideSent ? (
-                  <>
-                    <p role="status" style={{ margin: "0", padding: "14px 16px", background: "#0B1714", color: "#F3E9DD", fontSize: "15px", lineHeight: "1.6" }}>
-                      תודה! הבקשה התקבלה, והמדריך יישלח אליכם למייל.
-                    </p>
-                  </>
-                ) : null}
-                {v.guideOpen ? (
-                  <>
-                    <form className="guide-form" onSubmit={v.sendGuide} noValidate style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
-                      <label style={{ display: "flex", flexDirection: "column", gap: "6px", fontSize: "13px", color: "#3F4F4A" }}>
-                        אימייל
-                        <input ref={v.guideRef} name="email" type="email" autoComplete="email" required placeholder="name@example.com" dir="ltr" aria-invalid={v.guideInvalid} style={{ height: "50px", padding: "0 16px", border: "1px solid #B8A88F", background: "#FFFFFF", fontSize: "15px", fontFamily: "inherit", color: "#0B1714" }} />
-                      </label>
-                      {v.hasGuideErr ? (
-                        <>
-                          <p role="alert" style={{ margin: "0", fontSize: "14px", color: "#8A3B22" }}>
-                            {v.guideErr}
-                          </p>
-                        </>
-                      ) : null}
-                      <button className="ink" type="submit" disabled={v.guideSending} style={{ height: "50px", fontSize: "15px", fontWeight: "500" }}>
-                        {v.guideLabel}
-                      </button>
-                    </form>
-                  </>
-                ) : null}
-              </div>
-            </div>
           </div>
         </section>
+        ) : null}
         {/* ================= FAQ ================= */}
         <section id="faq" style={{ background: "#F6EFE6", color: "#0B1714" }}>
           <div className="pad sec" style={{ maxWidth: "1280px", margin: "0 auto", padding: "160px 48px", display: "flex", flexWrap: "wrap", gap: "32px 72px" }}>
