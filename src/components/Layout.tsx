@@ -66,6 +66,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <a href="mailto:krigeltomer@gmail.com" className="hover:text-[#C9A467]">krigeltomer@gmail.com</a>
               {" · "}
               <a href={WA_HREF} target="_blank" rel="noopener noreferrer" className="hover:text-[#C9A467]">וואטסאפ</a>
+              {SITE.instagram ? (
+                <>
+                  {" · "}
+                  <a href={`https://www.instagram.com/${SITE.instagram}/`} target="_blank" rel="noopener noreferrer" className="hover:text-[#C9A467]">אינסטגרם</a>
+                </>
+              ) : null}
             </span>
             <span className="flex gap-6">
               <Link to="/privacy" className="underline hover:text-[#C9A467]">מדיניות פרטיות</Link>

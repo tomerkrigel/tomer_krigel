@@ -46,7 +46,7 @@ export default class Home extends React.Component<Record<string, never>, any> {
     this.state = {
       phase: 'chaos', heroH: 820, mine: [], myth: {}, faq: 0, sent: false, seen: {}, scr: null,
       deck: { idx: 0, sorted: {}, fft: null, snap: null, round: 0 },
-      tbDay: false, tbNotes: false,
+      tbDay: false, tbNotes: false, heroPaused: false,
       sending: false, formErr: '', errField: '',
       guideSent: false, guideSending: false, guideErr: ''
     };
@@ -61,6 +61,7 @@ export default class Home extends React.Component<Record<string, never>, any> {
     this.heroDown = function (e) { self.heroPointer(e, true); };
     this.heroLeave = function () { if (self.hero) self.hero.ptr.on = false; };
     this.doOrder = function () { self.heroOrder(); };
+    this.togglePause = function () { self.heroSetPaused(!self.state.heroPaused); };
     this.doMess = function () { self.heroMess(); };
     this.mineKey = function (e) { if (e.key === 'Enter') { e.preventDefault(); self.addFromInput(); } };
     this.mineSubmit = function () { self.addFromInput(); };
@@ -219,6 +220,7 @@ export default class Home extends React.Component<Record<string, never>, any> {
     for (var i = 0; i < mine.length; i++) if (mine[i].label === label) return;
     if (cat == null) cat = this.guessCat(label);
     this.setState(function (prev) { return { mine: prev.mine.concat([{ label: label, cat: cat }]) }; });
+    if (this.hero && this.hero.paused) this.heroSetPaused(false);
     this.heroAdd(label, cat);
   }
 
@@ -242,7 +244,6 @@ export default class Home extends React.Component<Record<string, never>, any> {
       s[key] = true;
       return { seen: s };
     });
-    if (key === 'stmt') this.startScramble();
   }
 
   setupIO() {
@@ -346,34 +347,6 @@ export default class Home extends React.Component<Record<string, never>, any> {
       });
     }, { threshold: [0.55, 0.8] });
     if (this._tbEl) this._tbIO.observe(this._tbEl);
-  }
-
-  /* ---------------- scramble statement ---------------- */
-  startScramble() {
-    var self = this;
-    var reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
-    if (reduce || this._scrT) return;
-    var segs = ['לא חסר לכם כסף.', 'חסרה לכם ', 'שיטה', '.'];
-    var total = 0;
-    segs.forEach(function (s) { total += s.length; });
-    var pool = 'אבגדהוזחטיכלמנסעפצקרשת₪%0123456789';
-    var start = Date.now(), dur = 1500;
-    this._scrT = setInterval(function () {
-      if (!self._mounted) { clearInterval(self._scrT); return; }
-      var t = (Date.now() - start) / dur;
-      if (t >= 1) { clearInterval(self._scrT); self.setState({ scr: null }); return; }
-      var idx = 0;
-      var out = segs.map(function (s) {
-        var r = '';
-        for (var k = 0; k < s.length; k++, idx++) {
-          var ch = s.charAt(k);
-          if (ch === ' ' || ch === '.' || t > (idx / total) * 0.8 + 0.2) r += ch;
-          else r += pool.charAt(Math.floor(Math.random() * pool.length));
-        }
-        return r;
-      });
-      self.setState({ scr: out });
-    }, 45);
   }
 
   /* ================= SWIPE DECK ================= */
@@ -817,6 +790,7 @@ export default class Home extends React.Component<Record<string, never>, any> {
   heroOrder() {
     var H = this.hero, self = this;
     if (!H || H.phase !== 'chaos') return;
+    if (H.paused) this.heroSetPaused(false);
     clearTimeout(this._auto);
     H.phase = 'pending';
     var go = function () {
@@ -850,6 +824,7 @@ export default class Home extends React.Component<Record<string, never>, any> {
   heroMess() {
     var H = this.hero;
     if (!H || (H.phase !== 'order' && H.phase !== 'ordering')) return;
+    if (H.paused) this.heroSetPaused(false);
     clearTimeout(this._auto);
     H.phase = 'chaos';
     H.wave = null;
@@ -890,7 +865,7 @@ export default class Home extends React.Component<Record<string, never>, any> {
 
   heroKick() {
     var H = this.hero, self = this;
-    if (!H || H.dead || H.running || !H.visible) return;
+    if (!H || H.dead || H.running || !H.visible || H.paused) return;
     H.running = true;
     H.lastT = performance.now();
     var frame = function (t) {
@@ -899,10 +874,26 @@ export default class Home extends React.Component<Record<string, never>, any> {
       H.lastT = t;
       var busy = self.heroStep(t, dt);
       self.heroDraw();
-      if (busy && H.visible && !H.dead) H.raf = requestAnimationFrame(frame);
+      if (busy && H.visible && !H.dead && !H.paused) H.raf = requestAnimationFrame(frame);
       else H.running = false;
     };
     H.raf = requestAnimationFrame(frame);
+  }
+
+  // "Pause motion" control for the hero (accessibility: moving content needs a way to stop it)
+  heroSetPaused(p) {
+    var H = this.hero;
+    this.setState({ heroPaused: p });
+    if (!H) return;
+    H.paused = p;
+    if (p) {
+      clearTimeout(this._auto);
+      if (H.raf) cancelAnimationFrame(H.raf);
+      H.running = false;
+      this.heroDraw();
+    } else {
+      this.heroKick();
+    }
   }
 
   heroStep(t, dt) {
@@ -1369,21 +1360,23 @@ export default class Home extends React.Component<Record<string, never>, any> {
       noMine: !hasMine,
       waHref: waHref,
       waLabel: hasMine ? 'שלחו לי את הבלגן בוואטסאפ' : 'או כתבו לי בוואטסאפ',
-      heroL1: chaos ? 'ככה נראה' : 'וככה הוא נראה',
-      heroL2: chaos ? 'החודש שלכם.' : 'אחרי 4 פגישות.',
+      heroL1: chaos ? 'אתם מרוויחים יפה.' : 'וככה זה מרגיש',
+      heroL2: chaos ? 'אז למה זה לא מרגיש ככה?' : 'אחרי 4 פגישות.',
       heroSub: chaos
-        ? 'גן, קפה, דלק, מנויים, מתנה ליום הולדת – הכל מסתובב סביבכם בבת אחת. זרקו פנימה גם את מה שיש אצלכם:'
+        ? 'ליווי פיננסי אישי למשפחות צעירות, ב־4 פגישות: מבינים לאן הולך הכסף, בונים תקציב שנותן לנשום – ויוצאים עם שיטה שעובדת גם בלעדיי.'
         : (hasMine
           ? 'גם מה שהוספתם מצא מקום – מסומן בזהב. ואת הסדר הזה תדעו לשמור לבד, בלי לוותר על הקפה.'
           : 'כל הוצאה במקומה, ומה שנשאר זורם לעתיד. ואתם יודעים לשמור על הסדר הזה לבד – בלי לוותר על הקפה.'),
       heroHint: 'נסו לגעת בטבעות.',
+      chipsLabel: chaos ? 'מה מסתובב אצלכם החודש? זרקו לטבעות:' : 'נשאר משהו בחוץ? הוסיפו אותו:',
+      togglePause: this.togglePause,
+      heroPaused: !!st.heroPaused,
+      pauseLabel: st.heroPaused ? 'הפעלת תנועה' : 'עצירת תנועה',
       heroAria: chaos
         ? 'המחשה: הוצאות ומטבעות מסתובבים בשלוש טבעות סביב מטבע זהב'
         : 'המחשה: אותן הוצאות מסודרות בארבע קבוצות – קבועות, גמישות, לבחינה, ולעתיד עם ערימות מטבעות'
     };
 
-    // ---- statement scramble ----
-    var segs = st.scr || ['לא חסר לכם כסף.', 'חסרה לכם ', 'שיטה', '.'];
 
     // ---- meet Tomer: scattered receipts snap into a neat stack ----
     var meSeen = !!st.seen.me;
@@ -1464,9 +1457,7 @@ export default class Home extends React.Component<Record<string, never>, any> {
       endText: 'קבועות ' + zCounts[0] + ' · גמישות ' + zCounts[1] + ' · לבחינה ' + zCounts[2]
     };
 
-    // ---- myths ----
-    var P = [[0, 0], [30, 0], [62, 0], [100, 0], [100, 38], [100, 72], [100, 100], [68, 100], [34, 100], [0, 100], [0, 64], [0, 30]];
-    var C = [54, 46];
+    // ---- myths: tap a card to reveal the fact ----
     var mythData = [
       { myth: 'תכנון פיננסי אומר לוותר על בילויים', fact: 'תקציב נכון שם את המסעדות, החופשות והקפה בפנים – מראש ובלב שקט.' },
       { myth: 'צריך להרוויח יותר כדי להתחיל לחסוך', fact: 'ברוב המשפחות הפער לא נסגר בשכר – הוא נסגר בשיטה.' },
@@ -1474,43 +1465,18 @@ export default class Home extends React.Component<Record<string, never>, any> {
       { myth: 'ליווי פיננסי זה רק לעשירים', fact: 'דווקא משפחות עם הכנסה רגילה מרוויחות ממנו הכי הרבה.' }
     ];
     var myths = mythData.map(function (c, i) {
-      var m = st.myth[i] || 0, num = '0' + (i + 1);
-      var frags = P.map(function (p, k) {
-        var q = P[(k + 1) % P.length];
-        var gx = (C[0] + p[0] + q[0]) / 3 - C[0], gy = (C[1] + p[1] + q[1]) / 3 - C[1];
-        var len = Math.sqrt(gx * gx + gy * gy) || 1;
-        var dist = 150 + ((k * 37 + i * 11) % 110);
-        var dx = Math.round(gx / len * dist), dy = Math.round(gy / len * dist + 60);
-        var rot = ((k * 53 + i * 29) % 80) - 40;
-        var basePoly = 'clip-path: polygon(' + C[0] + '% ' + C[1] + '%, ' + p[0] + '% ' + p[1] + '%, ' + q[0] + '% ' + q[1] + '%); --dx: ' + dx + 'px; --dy: ' + dy + 'px; --rot: ' + rot + 'deg; ';
-        var anim = m === 1
-          ? 'animation: shatter .95s cubic-bezier(.12,.7,.25,1) both; animation-delay: ' + (k * 14) + 'ms'
-          : (m === 2 ? 'animation: assemble .6s cubic-bezier(.4,0,.2,1) both; animation-delay: ' + (k * 12) + 'ms' : 'opacity: 0');
-        return { style: basePoly + anim, myth: c.myth, num: num };
-      });
+      var open = !!st.myth[i], num = '0' + (i + 1);
       return {
         num: num,
         myth: c.myth,
         fact: c.fact,
-        frags: frags,
-        pressed: m === 1 ? 'true' : 'false',
-        aria: m === 1 ? 'העובדה: ' + c.fact + '. לחצו להרכבה מחדש' : 'המיתוס: ' + c.myth + '. לחצו כדי לנפץ ולגלות את העובדה',
-        frontStyle: m === 0 ? 'opacity: 1' : 'opacity: 0',
-        crackCls: m === 0 ? '' : 'gone',
-        cardStyle: m === 1 ? 'animation: jolt .32s ease' : '',
+        pressed: open ? 'true' : 'false',
+        aria: open ? 'העובדה: ' + c.fact + '. לחצו לחזרה למיתוס' : 'המיתוס: ' + c.myth + '. לחצו כדי לגלות את העובדה',
+        frontStyle: open ? 'opacity: 0; transform: translateY(-10px); pointer-events: none' : 'opacity: 1; transform: none',
         toggle: function () {
-          var cur2 = self.state.myth[i] || 0;
-          if (cur2 === 2) return;
           var next = Object.assign({}, self.state.myth);
-          next[i] = cur2 === 0 ? 1 : 2;
+          next[i] = !next[i];
           self.setState({ myth: next });
-          if (cur2 === 1) {
-            self.later(function () {
-              var n2 = Object.assign({}, self.state.myth);
-              n2[i] = 0;
-              self.setState({ myth: n2 });
-            }, 760);
-          }
         }
       };
     });
@@ -1527,8 +1493,8 @@ export default class Home extends React.Component<Record<string, never>, any> {
       return {
         word: d.word,
         text: d.text,
-        wordStyle: 'position: relative; display: inline-block; min-width: 0; ' + (notsSeen ? 'animation: shake .34s ease both; animation-delay: ' + (delay + 420) + 'ms' : ''),
-        barStyle: 'position: absolute; right: -10px; left: -10px; top: 52%; height: 8px; background: #C9A467; transform-origin: right center; transform: scaleX(' + (notsSeen ? 1 : 0) + '); ' + (notsSeen ? 'animation: slam .6s cubic-bezier(.2,.9,.3,1.25) both; animation-delay: ' + delay + 'ms' : '')
+        wordStyle: 'position: relative; display: inline-block; min-width: 0',
+        barStyle: 'position: absolute; right: -10px; left: -10px; top: 54%; height: 6px; background: #C9A467; transform-origin: right center; transform: scaleX(' + (notsSeen ? 1 : 0) + '); transition: transform 1.1s cubic-bezier(.65,0,.35,1) ' + (delay + 250) + 'ms'
       };
     });
 
@@ -1607,7 +1573,6 @@ export default class Home extends React.Component<Record<string, never>, any> {
       ioMe: this.ioRef('me'),
       ioNots: this.ioRef('nots'),
       ioChat: this.ioRef('chat'),
-      s0: segs[0], s1: segs[1], s2: segs[2], s3: segs[3],
       principles: principles,
       myths: myths,
       nots: nots,
@@ -1643,6 +1608,11 @@ export default class Home extends React.Component<Record<string, never>, any> {
       trustDuration: SITE.duration ? '4 פגישות לאורך ' + SITE.duration : '4 פגישות, צעד אחר צעד',
       personalLine: SITE.personalLine,
       hasPersonal: !!SITE.personalLine,
+      experienceLine: SITE.experienceLine,
+      hasExperience: !!SITE.experienceLine,
+      instaHandle: SITE.instagram,
+      instaHref: SITE.instagram ? 'https://www.instagram.com/' + SITE.instagram + '/' : '',
+      hasInsta: !!SITE.instagram,
       hasFounding: !!(SITE.foundingSeats && SITE.foundingPerks),
       foundingSeats: SITE.foundingSeats,
       foundingText: SITE.foundingSeats + ' משפחות ראשונות בלבד, עם זמן ותשומת לב שלא יהיו כאלה בהמשך. המשפחות המייסדות מקבלות: ' + SITE.foundingPerks + '.',
@@ -1694,15 +1664,25 @@ export default class Home extends React.Component<Record<string, never>, any> {
             </filter>
             <rect width="100%" height="100%" filter="url(#grainA)" />
           </svg>
+          {v.isChaos ? (
+            <button className="motion-btn" onClick={v.togglePause}>
+              {v.heroPaused ? (
+                <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.5 L10.5 6 L3 10.5 Z" fill="currentColor" /></svg>
+              ) : (
+                <svg viewBox="0 0 12 12" aria-hidden="true"><rect x="2" y="1.5" width="3" height="9" fill="currentColor" /><rect x="7" y="1.5" width="3" height="9" fill="currentColor" /></svg>
+              )}
+              <span>{v.pauseLabel}</span>
+            </button>
+          ) : null}
           <div className="pad pe-none hero-inner" style={{ position: "relative", maxWidth: "1280px", margin: "0 auto", padding: "0 48px" }}>
             <div ref={v.heroTextRef} className="hero-text hero-gap" style={{ display: "flex", flexDirection: "column", gap: "20px", alignItems: "flex-start", minWidth: "0", width: "100%" }}>
               <div className="eyebrow" style={{ display: "flex", alignItems: "center", gap: "12px", fontSize: "13px", letterSpacing: "0.16em", color: "#C9A467", fontWeight: "500" }}>
-                <span className="pulse" style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#C9A467" }} />
+                <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#C9A467" }} />
                 <span>
                   תכנון פיננסי למשפחות צעירות · ליווי 1:1
                 </span>
               </div>
-              <h1 className="h1hero serif" aria-live="polite" style={{ margin: "0", fontWeight: "300", fontSize: "82px", lineHeight: "0.98", letterSpacing: "-0.025em", color: "#F3E9DD" }}>
+              <h1 className="h1hero serif" aria-live="polite" style={{ margin: "0", fontWeight: "300", fontSize: "60px", lineHeight: "1.04", letterSpacing: "-0.025em", color: "#F3E9DD" }}>
                 {v.heroL1}
                 <br />
                 <span style={{ fontWeight: "700", color: "#C9A467" }}>
@@ -1712,32 +1692,17 @@ export default class Home extends React.Component<Record<string, never>, any> {
               <p className="hero-sub" style={{ margin: "0", fontSize: "18px", lineHeight: "1.65", color: "#C5D1CC", fontWeight: "300" }}>
                 {v.heroSub}
               </p>
-              <div className="addrow pe-auto" role="group" aria-label="הוסיפו הוצאות משלכם לערימה" style={{ width: "100%" }}>
-                {(v.presets || []).map((pr, $index) => (
-                  <React.Fragment key={$index}>
-                    <button className="addchip" onClick={pr?.add} aria-pressed={pr?.pressed}>
-                      {pr?.sign}{" "}{pr?.label}
-                    </button>
-                  </React.Fragment>
-                ))}
-                <label className="sr" htmlFor="mineIn">
-                  הוסיפו הוצאה משלכם
-                </label>
-                <input id="mineIn" className="addin" type="text" ref={v.mineInRef} onKeyDown={v.mineKey} placeholder="משהו אחר…" />
-                <button className="addchip" onClick={v.mineSubmit} aria-label="הוסיפו לערימה" style={{ width: "36px", padding: "0", fontSize: "18px" }}>
-                  +
-                </button>
-              </div>
               <div className="pe-auto" style={{ display: "flex", flexWrap: "wrap", gap: "10px", alignItems: "center" }}>
                 {v.isChaos ? (
                   <>
-                    <button className="gold hero-btn" onClick={v.doOrder} style={{ padding: "18px 30px", fontSize: "17px", fontWeight: "700" }}>
+                    <a className="gold hero-btn" href="#contact" style={{ padding: "18px 30px", fontSize: "17px", fontWeight: "700" }}>
+                      לשיחת היכרות
+                      <span className="hide-sm">{" – 20 דקות, חינם"}</span>
+                    </a>
+                    {" "}
+                    <button className="ghost hero-btn" onClick={v.doOrder} style={{ padding: "17px 24px", fontSize: "16px" }}>
                       עשו לי סדר ←
                     </button>
-                    {" "}
-                    <a className="ghost hero-btn" href="#contact" style={{ padding: "17px 24px", fontSize: "16px" }}>
-                      שיחת היכרות
-                    </a>
                   </>
                 ) : null}
                 {v.isOrder ? (
@@ -1759,21 +1724,36 @@ export default class Home extends React.Component<Record<string, never>, any> {
                       <>
                         <a className="gold hero-btn" href="#contact" style={{ padding: "18px 30px", fontSize: "17px", fontWeight: "700" }}>
                           לשיחת היכרות
-                          <span className="hide-sm">
-                            – 20 דקות, חינם
-                          </span>
+                          <span className="hide-sm">{" – 20 דקות, חינם"}</span>
                         </a>
                       </>
                     ) : null}
                     {" "}
                     <button className="ghost hero-btn" onClick={v.doMess} aria-label="בלגנו לי שוב" style={{ padding: "17px 22px", fontSize: "16px" }}>
-                      <span className="hide-sm">
-                        בלגנו לי שוב
-                      </span>
+                      <span className="hide-sm">{"בלגנו לי שוב "}</span>
                       ↻
                     </button>
                   </>
                 ) : null}
+              </div>
+              <div className="pe-auto" style={{ display: "flex", flexDirection: "column", gap: "10px", width: "100%", minWidth: "0" }}>
+                <span style={{ fontSize: "13px", color: "#9DB0A8" }}>{v.chipsLabel}</span>
+                <div className="addrow" role="group" aria-label="הוסיפו הוצאות משלכם לערימה" style={{ width: "100%" }}>
+                  {(v.presets || []).map((pr, $index) => (
+                    <React.Fragment key={$index}>
+                      <button className="addchip" onClick={pr?.add} aria-pressed={pr?.pressed}>
+                        {pr?.sign}{" "}{pr?.label}
+                      </button>
+                    </React.Fragment>
+                  ))}
+                  <label className="sr" htmlFor="mineIn">
+                    הוסיפו הוצאה משלכם
+                  </label>
+                  <input id="mineIn" className="addin" type="text" ref={v.mineInRef} onKeyDown={v.mineKey} placeholder="משהו אחר…" />
+                  <button className="addchip" onClick={v.mineSubmit} aria-label="הוסיפו לערימה" style={{ width: "36px", padding: "0", fontSize: "18px" }}>
+                    +
+                  </button>
+                </div>
               </div>
               <div style={{ minHeight: "44px", display: "flex", alignItems: "center" }}>
                 {v.isChaos ? (
@@ -2341,29 +2321,15 @@ export default class Home extends React.Component<Record<string, never>, any> {
             </div>
           </div>
         </section>
-        {/* ================= STATEMENT: SCRAMBLE + 3D COIN ================= */}
+        {/* ================= STATEMENT ================= */}
         <section style={{ background: "#F6EFE6", color: "#0B1714", position: "relative", overflow: "hidden" }}>
           <div className="pad sec" style={{ maxWidth: "1280px", margin: "0 auto", padding: "160px 48px", display: "flex", flexWrap: "wrap", gap: "64px 80px", alignItems: "center" }}>
             <div ref={v.ioStmt} data-io="stmt" style={{ flex: "999 1 620px", minWidth: "0", display: "flex", flexDirection: "column", gap: "32px" }}>
               <p className="giant serif" style={{ margin: "0", fontWeight: "300", fontSize: "92px", lineHeight: "1.04", letterSpacing: "-0.02em" }}>
-                <span className="sr">
-                  לא חסר לכם כסף. חסרה לכם שיטה.
-                </span>
-                {" "}
-                <span aria-hidden="true">
-                  {v.s0}
-                </span>
+                לא חסר לכם כסף.
                 <br />
-                {" "}
-                <span aria-hidden="true">
-                  {v.s1}
-                </span>
-                <span aria-hidden="true" style={{ fontWeight: "700", color: "#7A5C24" }}>
-                  {v.s2}
-                </span>
-                <span aria-hidden="true">
-                  {v.s3}
-                </span>
+                {"חסרה לכם "}
+                <span style={{ fontWeight: "700", color: "#7A5C24" }}>שיטה</span>.
               </p>
               <p className="mid serif" style={{ margin: "0", fontWeight: "300", fontSize: "34px", lineHeight: "1.35", color: "#66736E", maxWidth: "760px" }}>
                 ומישהו שיחזיק אותה איתכם – עד שתחזיקו אותה לבד.
@@ -2421,10 +2387,15 @@ export default class Home extends React.Component<Record<string, never>, any> {
               </p>
               {v.hasPersonal ? (
                 <>
-                  <p className="serif" style={{ margin: "0", fontSize: "22px", lineHeight: "1.5", color: "#66736E" }}>
+                  <p className="serif" style={{ margin: "0", fontSize: "22px", lineHeight: "1.5", color: "#66736E", maxWidth: "580px" }}>
                     {v.personalLine}
                   </p>
                 </>
+              ) : null}
+              {v.hasExperience ? (
+                <p style={{ margin: "0", fontSize: "16px", lineHeight: "1.7", color: "#3F4F4A", maxWidth: "560px", borderRight: "2px solid #C9A467", paddingRight: "14px" }}>
+                  {v.experienceLine}
+                </p>
               ) : null}
               <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginTop: "10px", maxWidth: "520px" }}>
                 {(v.principles || []).map((p, $index) => (
@@ -2447,6 +2418,13 @@ export default class Home extends React.Component<Record<string, never>, any> {
                   </React.Fragment>
                 ))}
               </div>
+              {v.hasInsta ? (
+                <a className="insta" href={v.instaHref} target="_blank" rel="noopener noreferrer">
+                  {"באינסטגרם "}
+                  <span dir="ltr" style={{ unicodeBidi: "isolate" }}>@{v.instaHandle}</span>
+                  {": מיתוסים, טעויות נפוצות וטיפים קצרים לסדר בכסף ←"}
+                </a>
+              ) : null}
             </div>
           </div>
         </section>
@@ -2614,7 +2592,7 @@ export default class Home extends React.Component<Record<string, never>, any> {
             </div>
           </div>
         </section>
-        {/* ================= MYTHS: SHATTER ================= */}
+        {/* ================= MYTHS ================= */}
         <section style={{ background: "#F6EFE6", color: "#0B1714" }}>
           <div className="pad sec" style={{ maxWidth: "1280px", margin: "0 auto", padding: "160px 48px" }}>
             <div className="rv" style={{ display: "flex", flexWrap: "wrap", gap: "24px 72px", alignItems: "end", marginBottom: "56px" }}>
@@ -2625,13 +2603,13 @@ export default class Home extends React.Component<Record<string, never>, any> {
                 </span>
               </h2>
               <p style={{ flex: "1 1 380px", margin: "0", fontSize: "18px", lineHeight: "1.75", color: "#3F4F4A", fontWeight: "300" }}>
-                ארבע אמונות על כסף שכדאי לבדוק מחדש. לחצו על קלף – ונפצו את המיתוס.
+                ארבע אמונות על כסף שכדאי לבדוק מחדש. לחצו על קלף – וגלו מה באמת נכון.
               </p>
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "18px" }}>
               {(v.myths || []).map((c, $index) => (
                 <React.Fragment key={$index}>
-                  <button className="mcard" onClick={c?.toggle} aria-pressed={c?.pressed} aria-label={c?.aria} style={css(c?.cardStyle)}>
+                  <button className="mcard" onClick={c?.toggle} aria-pressed={c?.pressed} aria-label={c?.aria}>
                     <div className="mback">
                       <span style={{ fontSize: "13px", letterSpacing: "0.14em", color: "#C9A467" }}>
                         העובדה
@@ -2641,7 +2619,7 @@ export default class Home extends React.Component<Record<string, never>, any> {
                       </span>
                       <span style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "13px", color: "#9DB0A8" }}>
                         <span>
-                          לחצו להרכבה מחדש
+                          לחצו לחזרה
                         </span>
                         <span style={{ width: "40px", height: "1px", background: "#C9A467" }} />
                       </span>
@@ -2660,37 +2638,11 @@ export default class Home extends React.Component<Record<string, never>, any> {
                       </span>
                       {" "}
                       <span style={{ fontSize: "14px", color: "#3F4F4A" }}>
-                        נפצו אותו ←
+                        לחצו לגלות ←
                       </span>
                       {" "}
                     </div>
                     {" "}
-                    {(c?.frags || []).map((fr, $index) => (
-                      <React.Fragment key={$index}>
-                        <div className="mface" style={css(fr?.style)}>
-                          <span style={{ display: "flex", justifyContent: "space-between", fontSize: "13px", letterSpacing: "0.14em", color: "#7A5C24" }}>
-                            <span>
-                              המיתוס
-                            </span>
-                            <span>
-                              {fr?.num}
-                            </span>
-                          </span>
-                          <span className="serif" style={{ fontSize: "28px", lineHeight: "1.3", color: "#0B1714" }}>
-                            {"״"}{fr?.myth}{"״"}
-                          </span>
-                          {" "}
-                          <span style={{ fontSize: "14px", color: "#3F4F4A" }}>
-                            נפצו אותו ←
-                          </span>
-                          {" "}
-                        </div>
-                      </React.Fragment>
-                    ))}
-                    {" "}
-                    <svg className={`cracks ${s(c?.crackCls)}`} viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-                      <path d="M54 46 L0 0 M54 46 L30 0 M54 46 L62 0 M54 46 L100 0 M54 46 L100 38 M54 46 L100 72 M54 46 L100 100 M54 46 L68 100 M54 46 L34 100 M54 46 L0 100 M54 46 L0 64 M54 46 L0 30" stroke="#7A5C24" strokeWidth="1" fill="none" vectorEffect="non-scaling-stroke" />
-                    </svg>
                     {" "}
                   </button>
                 </React.Fragment>
@@ -3057,6 +3009,14 @@ export default class Home extends React.Component<Record<string, never>, any> {
                 <a href="mailto:krigeltomer@gmail.com" style={{ color: "#9DB0A8", textDecoration: "none" }}>
                   krigeltomer@gmail.com
                 </a>
+                {v.hasInsta ? (
+                  <>
+                    {" · "}
+                    <a href={v.instaHref} target="_blank" rel="noopener noreferrer" style={{ color: "#9DB0A8", textDecoration: "none" }}>
+                      אינסטגרם
+                    </a>
+                  </>
+                ) : null}
               </span>
               <span style={{ display: "flex", gap: "24px" }}>
                 <Link to="/privacy" style={{ color: "#9DB0A8" }}>
