@@ -16,21 +16,20 @@ body:has(.k7){margin:0;background:#0B1714}
 .k7 .pe-none{pointer-events:none}
 .k7 .pe-auto{pointer-events:auto}
 .k7 .hero-inner{height:100%;display:flex;align-items:center}
-.k7 .hero-text{max-width:540px}
+.k7 .hero-text{max-width:620px}
+.k7 .h1hero{text-wrap:balance}
 .k7 .addrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .k7 .addchip{height:36px;padding:0 14px;border:1px solid #3C5A51;background:rgba(11,23,20,.7);color:#F3E9DD;font-size:14px;border-radius:18px;white-space:nowrap;transition:border-color .2s,background .2s,color .2s,transform .15s}
 .k7 .addchip:hover{border-color:#C9A467;transform:translateY(-1px)}
 .k7 .addchip[aria-pressed="true"]{background:#C9A467;color:#0B1714;border-color:#C9A467}
 .k7 .addin{height:36px;width:136px;padding:0 14px;border:1px dashed #5E7A70;background:rgba(11,23,20,.7);color:#F3E9DD;font-size:14px;border-radius:18px;font-family:inherit;flex:0 0 auto}
 .k7 .addin::placeholder{color:#8DA29A}
-.k7 .pulse{animation:pulse 2.4s ease-in-out infinite}
-@keyframes pulse{50%{opacity:.3}}
 @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 .k7 .coin-stage{perspective:900px}
-.k7 .coin3d{position:relative;width:240px;height:240px;transform-style:preserve-3d;animation:coinspin 7s linear infinite}
+.k7 .coin3d{position:relative;width:240px;height:240px;transform-style:preserve-3d;transform:rotateX(10deg) rotateY(-28deg);transition:transform 1.6s cubic-bezier(.4,0,.2,1)}
+.k7 .coin-stage:hover .coin3d{transform:rotateX(10deg) rotateY(152deg)}
 .k7 .coin3d .cf{position:absolute;inset:0;border-radius:50%;display:flex;align-items:center;justify-content:center;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:#C9A467;border:12px solid #B48F4C;box-shadow:inset 0 0 0 2px #E6CC92,inset 0 0 0 14px #C9A467,inset 0 0 0 15px #A8843F}
 .k7 .coin3d .ce{position:absolute;inset:0;border-radius:50%;background:#8C6B30}
-@keyframes coinspin{from{transform:rotateX(10deg) rotateY(0deg)}to{transform:rotateX(10deg) rotateY(360deg)}}
 .k7 .rcpt{--s:12px;background:#F3E9DD;color:#1B322C;padding:18px 22px 26px;display:flex;flex-direction:column;gap:6px;-webkit-mask:conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) 50%/var(--s) 100%;mask:conic-gradient(from -45deg at bottom,#0000,#000 1deg 89deg,#0000 90deg) 50%/var(--s) 100%}
 .k7 .sw-stage{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,380px) minmax(0,1fr);grid-template-areas:". ztop ." "zr deck zl" ". btns ." ". fft .";gap:20px 32px;align-items:stretch}
 .k7 .zone{border:1px solid rgba(201,164,103,.26);padding:18px 20px;display:flex;flex-direction:column;gap:6px;min-height:120px;transition:border-color .2s,background .2s,transform .25s}
@@ -51,18 +50,11 @@ body:has(.k7){margin:0;background:#0B1714}
 @keyframes riseA{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 @keyframes riseB{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 .k7 .mcard{position:relative;display:block;width:100%;height:300px;padding:0;border:none;background:transparent;text-align:right;color:inherit}
-.k7 .mface{position:absolute;inset:0;background:#FBF7F1;border:1px solid #DCCFBC;padding:30px;display:flex;flex-direction:column;justify-content:space-between}
+.k7 .mface{position:absolute;inset:0;background:#FBF7F1;border:1px solid #DCCFBC;padding:30px;display:flex;flex-direction:column;justify-content:space-between;transition:opacity .5s ease,transform .5s ease}
+.k7 .mcard:hover .mface{border-color:#C9A467}
 .k7 .mback{position:absolute;inset:0;background:#0B1714;padding:30px;display:flex;flex-direction:column;justify-content:space-between}
-.k7 .cracks{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity .25s;pointer-events:none}
-.k7 .mcard:hover .cracks{opacity:.6}
-.k7 .cracks.gone{display:none}
-@keyframes shatter{0%{opacity:1;transform:none}100%{opacity:0;transform:translate(var(--dx),var(--dy)) rotate(var(--rot)) scale(.82)}}
-@keyframes assemble{0%{opacity:0;transform:translate(var(--dx),var(--dy)) rotate(var(--rot)) scale(.82)}100%{opacity:1;transform:none}}
-@keyframes jolt{0%,100%{transform:none}25%{transform:translateX(-7px) rotate(-.7deg)}60%{transform:translateX(5px) rotate(.5deg)}}
-@keyframes slam{0%{transform:scaleX(0)}62%{transform:scaleX(1.05)}100%{transform:scaleX(1)}}
-@keyframes shake{0%,100%{transform:none}30%{transform:translateX(-5px)}65%{transform:translateX(4px)}}
 .k7 .ticket{position:relative;-webkit-mask:radial-gradient(circle at 0 50%,transparent 18px,#000 19px) left/51% 100% no-repeat,radial-gradient(circle at 100% 50%,transparent 18px,#000 19px) right/51% 100% no-repeat;mask:radial-gradient(circle at 0 50%,transparent 18px,#000 19px) left/51% 100% no-repeat,radial-gradient(circle at 100% 50%,transparent 18px,#000 19px) right/51% 100% no-repeat}
-.k7 .shine{position:absolute;inset:0;pointer-events:none;background:linear-gradient(105deg,transparent 38%,rgba(255,255,255,.42) 49%,transparent 60%);background-size:260% 100%;animation:shine 5s ease-in-out infinite}
+.k7 .shine{position:absolute;inset:0;pointer-events:none;background:linear-gradient(105deg,transparent 38%,rgba(255,255,255,.42) 49%,transparent 60%);background-size:260% 100%;animation:shine 5s ease-in-out 2}
 @keyframes shine{0%{background-position:140% 0}55%,100%{background-position:-60% 0}}
 .k7 .book{position:relative;width:180px;height:250px;transform-style:preserve-3d;transform:rotateY(24deg) rotateX(5deg);transition:transform .6s cubic-bezier(.2,.7,.2,1)}
 .k7 .book-stage:hover .book{transform:rotateY(6deg) rotateX(2deg)}
@@ -96,7 +88,7 @@ body:has(.k7){margin:0;background:#0B1714}
   .k7 .hide-sm{display:none !important}
   .k7 .show-sm{display:inline !important}
   .k7 .hero-inner{padding-top:18px !important}
-  .k7 .h1hero{font-size:44px !important}
+  .k7 .h1hero{font-size:36px !important}
   .k7 .hero-sub{font-size:16px !important;line-height:1.55 !important}
   .k7 .hero-btn{padding:13px 16px !important;font-size:15px !important}
   .k7 .eyebrow{font-size:11px !important;letter-spacing:.08em !important}
@@ -204,10 +196,11 @@ body:has(.k7){margin:0;background:#0B1714}
 .k7 .tb-handle{position:absolute;right:-2.2em;top:3.2em;width:3em;height:2.6em;border:.75em solid #EAE3D7;border-left:none;border-radius:0 1.3em 1.3em 0;box-shadow:.3em .6em .8em rgba(46,30,12,.2)}
 .k7 .tb-steam{position:absolute;left:1.6em;top:-6.4em;width:5.8em;height:7.6em;opacity:0;overflow:visible;transition:opacity 1s ease}
 .k7 .tb.is-day .tb-steam{opacity:.9;transition-delay:1.9s}
-.k7 .tb-steam path{fill:none;stroke:rgba(255,255,255,.85);stroke-width:3.4;stroke-linecap:round;filter:blur(1.4px);animation:tbSteam 3.4s ease-in-out infinite}
-.k7 .tb-steam path:nth-child(2){animation-delay:-1.1s}
-.k7 .tb-steam path:nth-child(3){animation-delay:-2.2s}
-@keyframes tbSteam{0%{transform:translateY(10px);opacity:0}35%{opacity:1}100%{transform:translateY(-12px);opacity:0}}
+.k7 .tb-steam path{fill:none;stroke:rgba(255,255,255,.85);stroke-width:3.4;stroke-linecap:round;filter:blur(1.4px)}
+.k7 .tb.is-day .tb-steam path{animation:tbSteam 2.4s ease-out 1.9s both}
+.k7 .tb.is-day .tb-steam path:nth-child(2){animation-delay:2.2s}
+.k7 .tb.is-day .tb-steam path:nth-child(3){animation-delay:2.5s}
+@keyframes tbSteam{from{transform:translateY(12px);opacity:0}to{transform:none;opacity:1}}
 
 /* watch */
 .k7 .tb-watch{width:7.4em;height:7.4em}
@@ -258,8 +251,7 @@ body:has(.k7){margin:0;background:#0B1714}
 .k7 .tb-sun{position:absolute;inset:-12%;pointer-events:none;background:repeating-linear-gradient(124deg,rgba(255,246,226,0) 0 2.8em,rgba(255,245,224,.95) 2.8em 6em,rgba(255,246,226,0) 6em 8.8em);filter:blur(.8em);mix-blend-mode:soft-light;opacity:0;transform:translateX(-7%);transition:opacity 1.8s ease .5s,transform 2.6s cubic-bezier(.3,0,.2,1) .4s;-webkit-mask:linear-gradient(100deg,#000 0%,#000 42%,transparent 66%);mask:linear-gradient(100deg,#000 0%,#000 42%,transparent 66%)}
 .k7 .tb.is-day .tb-sun{opacity:1;transform:none}
 .k7 .tb-leaf{position:absolute;left:-3em;top:-3em;width:27em;height:23em;pointer-events:none;opacity:0;filter:blur(.4em);mix-blend-mode:multiply;transform-origin:0 0;transition:opacity 2s ease 1s}
-.k7 .tb.is-day .tb-leaf{opacity:.3;animation:tbSway 7s ease-in-out infinite}
-@keyframes tbSway{0%,100%{transform:rotate(0deg)}50%{transform:rotate(2.4deg)}}
+.k7 .tb.is-day .tb-leaf{opacity:.3}
 .k7 .tb-sweep{position:absolute;inset:0;pointer-events:none;background:linear-gradient(100deg,rgba(255,240,210,0) 34%,rgba(255,246,228,.7) 50%,rgba(255,240,210,0) 66%);mix-blend-mode:soft-light;opacity:0;transform:translateX(-110%);transition:opacity .2s ease,transform 0s linear .3s}
 .k7 .tb.is-day .tb-sweep{opacity:1;transform:translateX(110%);transition:opacity .2s ease .3s,transform 1.8s cubic-bezier(.5,0,.3,1) .3s}
 .k7 .tb-warm{position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at var(--lx) var(--ly),rgba(255,172,88,.7) 0,rgba(255,152,64,.3) 10em,rgba(255,152,64,0) 21em);mix-blend-mode:soft-light;transition:opacity 1.3s ease .25s}
@@ -373,3 +365,12 @@ body:has(.k7){margin:0;background:#0B1714}
   .k7 .k7-logo{width:38px;height:38px}
 }
 .k7 .guide-card:only-child{max-width:920px;margin:0 auto}
+/* hero: pause control (sits inside the bottom corner of the rings frame) */
+.k7 .motion-btn{position:absolute;z-index:3;left:calc(max(48px, 50% - 592px) + 16px);bottom:52px;display:flex;align-items:center;gap:8px;height:34px;padding:0 14px;border:1px solid rgba(201,164,103,.35);border-radius:17px;background:rgba(11,23,20,.72);color:#C5D1CC;font-size:13px;font-family:inherit;transition:border-color .2s,color .2s}
+.k7 .motion-btn:hover{border-color:#C9A467;color:#F3E9DD}
+.k7 .motion-btn svg{display:block;width:11px;height:11px}
+@media (max-width: 1099px){.k7 .motion-btn{bottom:44px}}
+@media (max-width: 760px){.k7 .motion-btn{left:32px;bottom:24px;height:32px;padding:0 12px;font-size:12px}}
+/* meet Tomer: Instagram */
+.k7 .insta{align-self:flex-start;margin-top:6px;font-size:15px;line-height:1.6;color:#7A5C24;text-decoration:none;border-bottom:1px solid rgba(122,92,36,.35);padding-bottom:2px;transition:color .2s,border-color .2s}
+.k7 .insta:hover{color:#0B1714;border-color:#0B1714}
