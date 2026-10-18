@@ -29,5 +29,5 @@ export const SITE = {
   foundingPerks: "",
 };
 
-/** מזהה הטופס ב־Formspree – אותו טופס שהאתר משתמש בו היום. גם בקשות למדריך הרכב מגיעות אליו. */
+/** מזהה הטופס ב־Formspree – אותו טופס שהאתר משתמש בו היום. */
 export const FORMSPREE_ID = "mpqvjzzg";

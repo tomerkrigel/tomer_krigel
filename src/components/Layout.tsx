@@ -11,7 +11,6 @@ const WA_HREF = "https://wa.me/972543291703?text=" + encodeURIComponent("היי 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const nav = [
     { name: "נעים להכיר", to: "/#me" },
-    { name: "נסו בעצמכם", to: "/#method" },
     { name: SITE.price ? "כמה זה עולה" : "שאלות נפוצות", to: "/#faq" },
     { name: "4 הפגישות", to: "/#meetings" },
   ];
