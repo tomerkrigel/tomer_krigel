@@ -3,12 +3,17 @@
  *
  * נבנה אחד־לאחד מהעיצוב שאושר בקנבס. את הפרטים שרק אתה יכול למלא
  * (מחיר, אזור, משך התהליך, משפט אישי, כרטיס מייסדים) משנים ב־content.ts – לא כאן.
+ *
+ * טיפוגרפיה: לפני כל קו מפריד (–) בטקסט יש רווח בלתי־שביר, כדי שהקו לא יתחיל שורה חדשה.
  */
 import React from "react";
 import { Link } from "react-router-dom";
 import KrigelLogo from "../../components/KrigelLogo";
 import { SITE, FORMSPREE_ID } from "./content";
 import "./home.css";
+
+/** Keeps a dash with the word before it, so a line never starts with "–". */
+const keepDash = (t: string) => t.replace(/ – /g, "\u00a0– ");
 
 /** Text the way the design runtime printed it: null/undefined become "". */
 const s = (x: unknown): string => (x == null ? "" : String(x));
@@ -302,7 +307,7 @@ export default class Home extends React.Component<Record<string, never>, any> {
     }).then(function () {
       if (self._mounted) self.setState({ sent: true, sending: false });
     }).catch(function () {
-      if (self._mounted) self.setState({ sending: false, formErr: 'משהו השתבש בשליחה. אפשר לנסות שוב, או לכתוב לי ישר בוואטסאפ – הכפתור כאן למטה.' });
+      if (self._mounted) self.setState({ sending: false, formErr: 'משהו השתבש בשליחה. אפשר לנסות שוב, או לכתוב לי ישר בוואטסאפ – הכפתור כאן למטה.' });
     });
   }
 
@@ -352,16 +357,16 @@ export default class Home extends React.Component<Record<string, never>, any> {
   /* ================= SWIPE DECK ================= */
   deckBase() {
     return [
-      { label: 'שכר דירה', cat: 0, t: 'קבועה – אבל לא קדושה. כדאי לבחון אותה פעם בשנה, כשמגיע מועד החידוש.' },
+      { label: 'שכר דירה', cat: 0, t: 'קבועה – אבל לא קדושה. כדאי לבחון אותה פעם בשנה, כשמגיע מועד החידוש.' },
       { label: 'גן ילדים', cat: 0, t: 'קבועה לכל השנה. כדאי לתכנן מראש גם את הקייטנות של הקיץ, כדי שלא יפתיעו.' },
       { label: 'סופרמרקט', cat: 1, t: 'גמישה, ומרגישים אותה כל שבוע. סכום שבועי קבוע עושה פלאים לשקט הנפשי.' },
-      { label: 'מסעדות', cat: 1, t: 'גמישה – ושמורה. בתקציב טוב יש לה מקום מראש, בלי רגשות אשם.' },
+      { label: 'מסעדות', cat: 1, t: 'גמישה – ושמורה. בתקציב טוב יש לה מקום מראש, בלי רגשות אשם.' },
       { label: 'סטרימינג', cat: 2, t: 'כמה מנויים באמת פעילים אצלכם? בדיקה קצרה פעם ברבעון חוסכת הפתעות.' },
       { label: 'ביטוח רכב', cat: 0, t: 'קבועה שמתחדשת פעם בשנה. שווה לסמן ביומן את מועד החידוש, כדי שלא יחלוף בלי שתשימו לב.' },
       { label: 'חוגים', cat: 1, t: 'גמישה שמרגישה קבועה. שווה להחליט יחד מה הכי חשוב לכם השנה.' },
       { label: 'דלק', cat: 1, t: 'גמישה ומשתנה מחודש לחודש. קל יותר לעקוב כשהיא מרוכזת בכרטיס אחד.' },
       { label: 'מתנות', cat: 1, t: 'גמישה, ומפתיעה כל פעם מחדש. סכום שנתי שמחולק לחודשים מוריד הרבה לחץ.' },
-      { label: 'חדר כושר', cat: 2, t: 'בלי שיפוטיות: האם המנוי עדיין משרת אתכם? אם כן – הוא בפנים.' }
+      { label: 'חדר כושר', cat: 2, t: 'בלי שיפוטיות: האם המנוי עדיין משרת אתכם? אם כן – הוא בפנים.' }
     ];
   }
 
@@ -401,9 +406,9 @@ export default class Home extends React.Component<Record<string, never>, any> {
     if (!item) { this._flying = false; return; }
     var names = ['קבועה', 'גמישה', 'לבחינה'];
     var fft;
-    if (item.mine && !item.t) fft = { label: item.label, head: 'בחרתם: ' + names[z] + '.', text: 'את זה נבדוק יחד בפגישה – לכל משפחה התשובה קצת אחרת.' };
+    if (item.mine && !item.t) fft = { label: item.label, head: 'בחרתם: ' + names[z] + '.', text: 'את זה נבדוק יחד בפגישה – לכל משפחה התשובה קצת אחרת.' };
     else if (z === item.cat) fft = { label: item.label, head: 'גם אצלי: ' + names[z] + '.', text: item.t };
-    else fft = { label: item.label, head: 'בחרתם ' + names[z] + ' – לגיטימי. אצלי זה ' + names[item.cat] + ':', text: item.t };
+    else fft = { label: item.label, head: 'בחרתם ' + names[z] + ' – לגיטימי. אצלי זה ' + names[item.cat] + ':', text: item.t };
     var reset = function () {
       var el2 = self._card;
       if (el2) {
@@ -555,7 +560,7 @@ export default class Home extends React.Component<Record<string, never>, any> {
   heroMeasureItem(it) {
     var ctx = this.hero.ctx;
     if (it.kind === 'c') { it.w = it.h = it.r * 2; return; }
-    ctx.font = (it.kind === 'n' ? '500 ' : '600 ') + it.fs + 'px Heebo, Assistant, sans-serif';
+    ctx.font = (it.kind === 'n' ? '500 ' : '700 ') + it.fs + 'px Heebo, sans-serif';
     var tw = ctx.measureText(it.label).width;
     it.w = Math.round(tw + (it.kind === 'n' ? (this.hero.small ? 34 : 42) : (this.hero.small ? 24 : 30)) + (it.mine ? 8 : 0));
     it.r = Math.sqrt(it.w * it.h) * 0.47;
@@ -1128,7 +1133,7 @@ export default class Home extends React.Component<Record<string, never>, any> {
         ctx.textBaseline = 'alphabetic';
         ctx.textAlign = 'right';
         ctx.fillStyle = c.color;
-        ctx.font = '500 ' + Math.round((H.small ? 17 : 22) * s) + 'px "Frank Ruhl Libre", "FreeSerif", serif';
+        ctx.font = '400 ' + Math.round((H.small ? 17 : 22) * s) + 'px "Frank Ruhl Libre", "FreeSerif", serif';
         ctx.fillText(c.name, b.x1, b.y0 + b.headH * 0.55);
         ctx.textAlign = 'left';
         ctx.fillStyle = '#9DB0A8';
@@ -1223,7 +1228,7 @@ export default class Home extends React.Component<Record<string, never>, any> {
       ctx.globalAlpha = ga;
     }
     ctx.fillStyle = '#1B322C';
-    ctx.font = '600 ' + it.fs + 'px Heebo, Assistant, sans-serif';
+    ctx.font = '700 ' + it.fs + 'px Heebo, sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.direction = 'rtl';
@@ -1241,7 +1246,7 @@ export default class Home extends React.Component<Record<string, never>, any> {
       ctx.quadraticCurveTo(tx, ty, tx + 6, ty);
       ctx.fill();
       ctx.fillStyle = '#0B1714';
-      ctx.font = '700 10px Heebo, Assistant, sans-serif';
+      ctx.font = '700 10px Heebo, sans-serif';
       ctx.fillText('שלכם', tx + tagW / 2, ty + 7.5);
     }
   }
@@ -1274,7 +1279,7 @@ export default class Home extends React.Component<Record<string, never>, any> {
     ctx.fillStyle = strip > 0.5 ? color : '#C9A467';
     ctx.fill();
     ctx.fillStyle = '#F3E9DD';
-    ctx.font = '500 ' + it.fs + 'px Heebo, Assistant, sans-serif';
+    ctx.font = '500 ' + it.fs + 'px Heebo, sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.direction = 'rtl';
@@ -1363,10 +1368,10 @@ export default class Home extends React.Component<Record<string, never>, any> {
       heroL1: chaos ? 'אתם מרוויחים יפה.' : 'וככה זה מרגיש',
       heroL2: chaos ? 'אז למה זה לא מרגיש ככה?' : 'אחרי 4 פגישות.',
       heroSub: chaos
-        ? 'ליווי פיננסי אישי למשפחות צעירות, ב־4 פגישות: מבינים לאן הולך הכסף, בונים תקציב שנותן לנשום – ויוצאים עם שיטה שעובדת גם בלעדיי.'
+        ? 'ליווי פיננסי אישי למשפחות צעירות, ב־4 פגישות: מבינים לאן הולך הכסף, בונים תקציב שנותן לנשום – ויוצאים עם שיטה שעובדת גם בלעדיי.'
         : (hasMine
-          ? 'גם מה שהוספתם מצא מקום – מסומן בזהב. ואת הסדר הזה תדעו לשמור לבד, בלי לוותר על הקפה.'
-          : 'כל הוצאה במקומה, ומה שנשאר זורם לעתיד. ואתם יודעים לשמור על הסדר הזה לבד – בלי לוותר על הקפה.'),
+          ? 'גם מה שהוספתם מצא מקום – מסומן בזהב. ואת הסדר הזה תדעו לשמור לבד, בלי לוותר על הקפה.'
+          : 'כל הוצאה במקומה, ומה שנשאר זורם לעתיד. ואתם יודעים לשמור על הסדר הזה לבד – בלי לוותר על הקפה.'),
       heroHint: 'נסו לגעת בטבעות.',
       chipsLabel: chaos ? 'מה מסתובב אצלכם החודש? זרקו לטבעות:' : 'נשאר משהו בחוץ? הוסיפו אותו:',
       togglePause: this.togglePause,
@@ -1374,14 +1379,14 @@ export default class Home extends React.Component<Record<string, never>, any> {
       pauseLabel: st.heroPaused ? 'הפעלת תנועה' : 'עצירת תנועה',
       heroAria: chaos
         ? 'המחשה: הוצאות ומטבעות מסתובבים בשלוש טבעות סביב מטבע זהב'
-        : 'המחשה: אותן הוצאות מסודרות בארבע קבוצות – קבועות, גמישות, לבחינה, ולעתיד עם ערימות מטבעות'
+        : 'המחשה: אותן הוצאות מסודרות בארבע קבוצות – קבועות, גמישות, לבחינה, ולעתיד עם ערימות מטבעות'
     };
 
 
     // ---- meet Tomer: scattered receipts snap into a neat stack ----
     var meSeen = !!st.seen.me;
     var prin = [
-      { t: 'ההווה בפנים', d: 'מסעדות, חופשות וקפה של בוקר נכנסים לתקציב מראש. לא מוותרים – מתכננים.', from: 'translate(-90px, 70px) rotate(-14deg)' },
+      { t: 'ההווה בפנים', d: 'מסעדות, חופשות וקפה של בוקר נכנסים לתקציב מראש. לא מוותרים – מתכננים.', from: 'translate(-90px, 70px) rotate(-14deg)' },
       { t: 'צעד ראשון שמרגישים מיד', d: 'כבר מהפגישה הראשונה יוצאים עם פעולה קטנה אחת שעושה הבדל.', from: 'translate(110px, -40px) rotate(11deg)' },
       { t: 'עצמאות, לא תלות', d: 'ההצלחה שלי נמדדת ברגע שאתם כבר לא צריכים אותי.', from: 'translate(-40px, -90px) rotate(-7deg)' }
     ];
@@ -1417,7 +1422,7 @@ export default class Home extends React.Component<Record<string, never>, any> {
         hint: zd.hint,
         dropStyle: zCounts[z] ? 'display: none' : 'flex: 1 1 auto; min-height: 56px; margin-top: 8px; border: 1px dashed rgba(201,164,103,0.24); display: flex; align-items: center; justify-content: center; font-size: 13px; color: #6F857D',
         chips: last.map(function (lb, j) {
-          return { label: lb, style: 'display: block; width: fit-content; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; background: #F3E9DD; color: #1B322C; font-size: 12px; font-weight: 600; padding: 5px 10px; border-right: 3px solid ' + zd.color + '; box-shadow: 0 6px 12px rgba(0,0,0,.35); margin-top: ' + (j ? '-6px' : '0') + '; transform: rotate(' + (j % 2 ? 2 : -2) + 'deg)' };
+          return { label: lb, style: 'display: block; width: fit-content; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; background: #F3E9DD; color: #1B322C; font-size: 12px; font-weight: 700; padding: 5px 10px; border-right: 3px solid ' + zd.color + '; box-shadow: 0 6px 12px rgba(0,0,0,.35); margin-top: ' + (j ? '-6px' : '0') + '; transform: rotate(' + (j % 2 ? 2 : -2) + 'deg)' };
         })
       };
     });
@@ -1427,7 +1432,7 @@ export default class Home extends React.Component<Record<string, never>, any> {
         peeks.push({ label: items[idx + pk].label, face: 'background: ' + (pk === 1 ? '#D8CEC0' : '#B9B0A4'), style: 'transform: translateY(' + (pk * 11) + 'px) scale(' + (1 - pk * 0.045) + ') rotate(' + (pk === 1 ? -2.5 : 2.5) + 'deg)' });
       }
     }
-    var fft = deck.fft || { label: 'איך זה עובד', head: 'החליקו את הכרטיס – או לחצו על הכפתורים.', text: 'ימינה: קבועה. שמאלה: גמישה. למעלה: לבחינה. אין כאן נכון ולא נכון – רק חומר למחשבה.' };
+    var fft = deck.fft || { label: 'איך זה עובד', head: 'החליקו את הכרטיס – או לחצו על הכפתורים.', text: 'ימינה: קבועה. שמאלה: גמישה. למעלה: לבחינה. אין כאן נכון ולא נכון – רק חומר למחשבה.' };
     var cats3 = ['#6E9A82', '#C9A467', '#D08A68'];
     var swipe = {
       stageRef: this.stageRef,
@@ -1459,8 +1464,8 @@ export default class Home extends React.Component<Record<string, never>, any> {
 
     // ---- myths: tap a card to reveal the fact ----
     var mythData = [
-      { myth: 'תכנון פיננסי אומר לוותר על בילויים', fact: 'תקציב נכון שם את המסעדות, החופשות והקפה בפנים – מראש ובלב שקט.' },
-      { myth: 'צריך להרוויח יותר כדי להתחיל לחסוך', fact: 'ברוב המשפחות הפער לא נסגר בשכר – הוא נסגר בשיטה.' },
+      { myth: 'תכנון פיננסי אומר לוותר על בילויים', fact: 'תקציב נכון שם את המסעדות, החופשות והקפה בפנים – מראש ובלב שקט.' },
+      { myth: 'צריך להרוויח יותר כדי להתחיל לחסוך', fact: 'ברוב המשפחות הפער לא נסגר בשכר – הוא נסגר בשיטה.' },
       { myth: 'סדר בכסף דורש אקסלים מסובכים', fact: 'שיטה פשוטה אחת, שמבינים בפגישה אחת, עושה יותר מעשרה גיליונות.' },
       { myth: 'ליווי פיננסי זה רק לעשירים', fact: 'דווקא משפחות עם הכנסה רגילה מרוויחות ממנו הכי הרבה.' }
     ];
@@ -1485,7 +1490,7 @@ export default class Home extends React.Component<Record<string, never>, any> {
     var notsSeen = !!st.seen.nots;
     var notData = [
       { word: 'איש מכירות', text: 'אין לי מוצרים פיננסיים למכור. ההמלצה שלי לא תלויה במה שתבחרו.' },
-      { word: 'עמלות', text: 'שכר הטרחה משולם ישירות על ידכם – ורק על ידכם.' },
+      { word: 'עמלות', text: 'שכר הטרחה משולם ישירות על ידכם – ורק על ידכם.' },
       { word: 'סוכן ביטוח', text: 'כשצריך לבדוק ביטוחים, אני מפנה לסוכן מורשה. אני נשאר המצפן.' }
     ];
     var nots = notData.map(function (d, i) {
@@ -1500,12 +1505,12 @@ export default class Home extends React.Component<Record<string, never>, any> {
 
     // ---- FAQ ----
     var faqData = [
-      { q: 'נצטרך לוותר על דברים שאנחנו אוהבים?', a: 'ממש לא. התקציב שנבנה שם מראש מקום לבילויים, למסעדות ולחופשות – כדי שתיהנו מהם בלי רגשות אשם.' },
+      { q: 'נצטרך לוותר על דברים שאנחנו אוהבים?', a: 'ממש לא. התקציב שנבנה שם מראש מקום לבילויים, למסעדות ולחופשות – כדי שתיהנו מהם בלי רגשות אשם.' },
       { q: 'חייבים להגיע שנינו?', a: 'מומלץ מאוד, כי שינוי בבית עובד הכי טוב כשיש שפה משותפת. אבל אפשר בהחלט להתחיל עם אחד מכם.' },
       { q: 'מה ההבדל בינך לבין יועץ בבנק?', a: 'אין לי מוצרים למכור ואני לא מקבל עמלות. שכר הטרחה משולם ישירות על ידכם, ולכן ההמלצה נקייה.' },
       { q: 'מה צריך להביא?', a: 'לפני הפגישה הראשונה תקבלו רשימה מסודרת: דפי חשבון ואשראי משלושת החודשים האחרונים, דוחות קופות גמל וקרן השתלמות, ופרטי הלוואות אם יש.' }
     ];
-    if (SITE.price) faqData.unshift({ q: 'כמה זה עולה?', a: SITE.price + ' – זה המחיר המלא ל־4 הפגישות, בלי הפתעות ובלי עמלות נסתרות.' });
+    if (SITE.price) faqData.unshift({ q: 'כמה זה עולה?', a: SITE.price + ' – זה המחיר המלא ל־4 הפגישות, בלי הפתעות ובלי עמלות נסתרות.' });
     var faqs = faqData.map(function (f, i) {
       var open = st.faq === i;
       return {
@@ -1519,7 +1524,7 @@ export default class Home extends React.Component<Record<string, never>, any> {
     // ---- meetings ----
     var meetingData = [
       { num: 'I', title: 'מיפוי ובהירות', desc: 'עוברים יחד על התמונה המלאה ומגדירים מטרות. בלי שיפוטיות.', take: 'מיפוי מלא וכלל ראשון לשבוע', you: 0.2, r: [22, 34] },
-      { num: 'II', title: 'בונים תקציב שנותן לנשום', desc: 'בונים יחד את התקציב הראשון שלכם – קבועות, גמישות ולבחינה.', take: 'התקציב האישי הראשון שלכם', you: 0.5, r: [32, 44] },
+      { num: 'II', title: 'בונים תקציב שנותן לנשום', desc: 'בונים יחד את התקציב הראשון שלכם – קבועות, גמישות ולבחינה.', take: 'התקציב האישי הראשון שלכם', you: 0.5, r: [32, 44] },
       { num: 'III', title: 'מדייקים מול המציאות', desc: 'כחודש אחרי: משווים לתקציב ומתקנים יחד.', take: 'תקציב מכויל לחיים האמיתיים', you: 0.72, r: [42, 54] },
       { num: 'IV', title: 'אתם בונים, אני מסתכל', desc: 'אתם בונים את התזרים בעצמכם. אני רק מוודא שאתם יוצאים בטוחים.', take: 'היכולת לעשות את זה לבד', you: 0.94, r: [52, 64] }
     ];
@@ -1535,8 +1540,8 @@ export default class Home extends React.Component<Record<string, never>, any> {
     var chatSeen = !!st.seen.chat;
     var msgs = [
       'היי, תודה על השיחה! הנה 3 הנקודות שסיכמנו:',
-      '1. לרכז את כל המנויים במקום אחד – ולבחור מה נשאר.',
-      '2. לקבוע מראש סכום חודשי למסעדות ובילויים – וליהנות ממנו בלי רגשות אשם.',
+      '1. לרכז את כל המנויים במקום אחד – ולבחור מה נשאר.',
+      '2. לקבוע מראש סכום חודשי למסעדות ובילויים – וליהנות ממנו בלי רגשות אשם.',
       '3. להגדיר העברה אוטומטית קטנה לחיסכון, ביום שהמשכורת נכנסת.'
     ];
     var bubbleBase = 'align-self: flex-start; max-width: 88%; background: #F3E9DD; color: #0B1714; padding: 10px 14px; font-size: 15px; line-height: 1.55; border-radius: 14px 4px 14px 14px; overflow: hidden; ';
@@ -1564,7 +1569,7 @@ export default class Home extends React.Component<Record<string, never>, any> {
       tbDayP: day ? 'true' : 'false',
       tbTimeText: day ? 'השעה 07:30, בוקר' : 'השעה 22:47, לילה',
       tbAria: day
-        ? 'המחשה: אותו שולחן בבוקר. הקבלות מסודרות בשלוש ערימות – קבועה, גמישה, לבחינה – לצד דף תוכנית עם שלוש נקודות, הטלפון הפוך, והציור של הילדים גלוי.'
+        ? 'המחשה: אותו שולחן בבוקר. הקבלות מסודרות בשלוש ערימות – קבועה, גמישה, לבחינה – לצד דף תוכנית עם שלוש נקודות, הטלפון הפוך, והציור של הילדים גלוי.'
         : 'המחשה: שולחן מטבח בלילה. קבלות פזורות מעל ציור של ילד, טלפון עם התראות חיוב, ותה שהתקרר.'
     };
 
@@ -1606,16 +1611,16 @@ export default class Home extends React.Component<Record<string, never>, any> {
       trustCert: 'יועץ פיננסי משפחתי מוסמך' + (SITE.certifiedBy ? ' · ' + SITE.certifiedBy : ''),
       trustArea: 'בזום, או פנים אל פנים' + (SITE.area ? ' ב' + SITE.area : ''),
       trustDuration: SITE.duration ? '4 פגישות לאורך ' + SITE.duration : '4 פגישות, צעד אחר צעד',
-      personalLine: SITE.personalLine,
+      personalLine: keepDash(SITE.personalLine),
       hasPersonal: !!SITE.personalLine,
-      experienceLine: SITE.experienceLine,
+      experienceLine: keepDash(SITE.experienceLine),
       hasExperience: !!SITE.experienceLine,
       instaHandle: SITE.instagram,
       instaHref: SITE.instagram ? 'https://www.instagram.com/' + SITE.instagram + '/' : '',
       hasInsta: !!SITE.instagram,
       hasFounding: !!(SITE.foundingSeats && SITE.foundingPerks),
       foundingSeats: SITE.foundingSeats,
-      foundingText: SITE.foundingSeats + ' משפחות ראשונות בלבד, עם זמן ותשומת לב שלא יהיו כאלה בהמשך. המשפחות המייסדות מקבלות: ' + SITE.foundingPerks + '.',
+      foundingText: keepDash(SITE.foundingSeats + ' משפחות ראשונות בלבד, עם זמן ותשומת לב שלא יהיו כאלה בהמשך. המשפחות המייסדות מקבלות: ' + SITE.foundingPerks + '.'),
       year: new Date().getFullYear()
     });
   }
@@ -1632,7 +1637,7 @@ export default class Home extends React.Component<Record<string, never>, any> {
           <div className="hdr" style={{ maxWidth: "1280px", margin: "0 auto", padding: "16px 48px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "16px" }}>
             <a href="#top" style={{ display: "flex", alignItems: "center", gap: "12px", textDecoration: "none" }}>
               <KrigelLogo className="k7-logo" />
-              <span className="serif brand" style={{ fontSize: "22px", fontWeight: "500", color: "#F3E9DD" }}>
+              <span className="serif brand" style={{ fontSize: "22px", fontWeight: "400", color: "#F3E9DD" }}>
                 קריגל פיננסיים
               </span>
             </a>
@@ -1673,20 +1678,20 @@ export default class Home extends React.Component<Record<string, never>, any> {
           ) : null}
           <div className="pad pe-none hero-inner" style={{ position: "relative", maxWidth: "1280px", margin: "0 auto", padding: "0 48px" }}>
             <div ref={v.heroTextRef} className="hero-text hero-gap" style={{ display: "flex", flexDirection: "column", gap: "20px", alignItems: "flex-start", minWidth: "0", width: "100%" }}>
-              <div className="eyebrow" style={{ display: "flex", alignItems: "center", gap: "12px", fontSize: "13px", letterSpacing: "0.16em", color: "#C9A467", fontWeight: "500" }}>
+              <div className="eyebrow" style={{ display: "flex", alignItems: "center", gap: "12px", fontSize: "14px", color: "#C9A467", fontWeight: "500" }}>
                 <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#C9A467" }} />
                 <span>
                   תכנון פיננסי למשפחות צעירות · ליווי 1:1
                 </span>
               </div>
-              <h1 className="h1hero serif" aria-live="polite" style={{ margin: "0", fontWeight: "300", fontSize: "60px", lineHeight: "1.04", letterSpacing: "-0.025em", color: "#F3E9DD" }}>
+              <h1 className="h1hero serif" aria-live="polite" style={{ margin: "0", fontWeight: "300", fontSize: "60px", lineHeight: "1.08", letterSpacing: "-0.025em", color: "#F3E9DD" }}>
                 {v.heroL1}
                 <br />
                 <span style={{ fontWeight: "700", color: "#C9A467" }}>
                   {v.heroL2}
                 </span>
               </h1>
-              <p className="hero-sub" style={{ margin: "0", fontSize: "18px", lineHeight: "1.65", color: "#C5D1CC", fontWeight: "300" }}>
+              <p className="hero-sub" style={{ margin: "0", fontSize: "18px", lineHeight: "1.65", color: "#C5D1CC" }}>
                 {v.heroSub}
               </p>
               <div className="pe-auto" style={{ display: "flex", flexWrap: "wrap", gap: "10px", alignItems: "center" }}>
@@ -1694,7 +1699,7 @@ export default class Home extends React.Component<Record<string, never>, any> {
                   <>
                     <a className="gold hero-btn" href="#contact" style={{ padding: "18px 30px", fontSize: "17px", fontWeight: "700" }}>
                       לשיחת היכרות
-                      <span className="hide-sm">{" – 20 דקות, חינם"}</span>
+                      <span className="hide-sm">{" – 20 דקות, חינם"}</span>
                     </a>
                     {" "}
                     <button className="ghost hero-btn" onClick={v.doOrder} style={{ padding: "17px 24px", fontSize: "16px" }}>
@@ -1721,7 +1726,7 @@ export default class Home extends React.Component<Record<string, never>, any> {
                       <>
                         <a className="gold hero-btn" href="#contact" style={{ padding: "18px 30px", fontSize: "17px", fontWeight: "700" }}>
                           לשיחת היכרות
-                          <span className="hide-sm">{" – 20 דקות, חינם"}</span>
+                          <span className="hide-sm">{" – 20 דקות, חינם"}</span>
                         </a>
                       </>
                     ) : null}
@@ -1768,10 +1773,10 @@ export default class Home extends React.Component<Record<string, never>, any> {
                       </span>
                       <span style={{ fontSize: "14px", lineHeight: "1.5", color: "#C5D1CC" }}>
                         <span className="hide-sm">
-                          אני תומר. זה בדיוק מה שאני עושה איתכם – בארבע פגישות.
+                          אני תומר. זה בדיוק מה שאני עושה איתכם – בארבע פגישות.
                         </span>
                         <span className="show-sm">
-                          אני תומר. זה מה שאני עושה – ב־4 פגישות.
+                          אני תומר. זה מה שאני עושה – ב־4 פגישות.
                         </span>
                       </span>
                     </span>
@@ -1888,10 +1893,10 @@ export default class Home extends React.Component<Record<string, never>, any> {
               </h2>
               <p className="tb-cap">
                 <span className="tb-x tb-xn" aria-hidden={v.tbHideN}>
-                  הקבלות על השולחן, התראה ועוד התראה, והתה כבר התקרר. משהו לא מסתדר – ולא ברור מה.
+                  הקבלות על השולחן, התראה ועוד התראה, והתה כבר התקרר. משהו לא מסתדר – ולא ברור מה.
                 </span>
                 <span className="tb-x tb-xd" aria-hidden={v.tbHideD}>
-                  שלוש ערימות, תוכנית אחת בכתב, והטלפון הפוך על השולחן. ומתחת לכל הקבלות – הציור שבגללו עושים את כל זה.
+                  שלוש ערימות, תוכנית אחת בכתב, והטלפון הפוך על השולחן. ומתחת לכל הקבלות – הציור שבגללו עושים את כל זה.
                 </span>
               </p>
               <div className="tb-tog" role="group" aria-label="לילה או בוקר">
@@ -2322,14 +2327,14 @@ export default class Home extends React.Component<Record<string, never>, any> {
         <section style={{ background: "#F6EFE6", color: "#0B1714", position: "relative", overflow: "hidden" }}>
           <div className="pad sec" style={{ maxWidth: "1280px", margin: "0 auto", padding: "160px 48px", display: "flex", flexWrap: "wrap", gap: "64px 80px", alignItems: "center" }}>
             <div ref={v.ioStmt} data-io="stmt" style={{ flex: "999 1 620px", minWidth: "0", display: "flex", flexDirection: "column", gap: "32px" }}>
-              <p className="giant serif" style={{ margin: "0", fontWeight: "300", fontSize: "92px", lineHeight: "1.04", letterSpacing: "-0.02em" }}>
+              <p className="giant serif" style={{ margin: "0", fontWeight: "300", fontSize: "92px", lineHeight: "1.08", letterSpacing: "-0.02em" }}>
                 לא חסר לכם כסף.
                 <br />
                 {"חסרה לכם "}
                 <span style={{ fontWeight: "700", color: "#7A5C24" }}>שיטה</span>.
               </p>
-              <p className="mid serif" style={{ margin: "0", fontWeight: "300", fontSize: "34px", lineHeight: "1.35", color: "#66736E", maxWidth: "760px" }}>
-                ומישהו שיחזיק אותה איתכם – עד שתחזיקו אותה לבד.
+              <p className="mid serif" style={{ margin: "0", fontWeight: "400", fontSize: "34px", lineHeight: "1.35", color: "#66736E", maxWidth: "760px" }}>
+                ומישהו שיחזיק אותה איתכם – עד שתחזיקו אותה לבד.
               </p>
             </div>
             <div className="coin-stage" aria-hidden="true" style={{ flex: "1 1 240px", display: "flex", justifyContent: "center" }}>
@@ -2363,24 +2368,24 @@ export default class Home extends React.Component<Record<string, never>, any> {
                 <span className="serif" style={{ fontSize: "20px" }}>
                   תומר קריגל
                 </span>
-                <span style={{ fontSize: "12px", color: "#B9C7C1", letterSpacing: "0.06em" }}>
+                <span style={{ fontSize: "12px", color: "#B9C7C1" }}>
                   יועץ פיננסי משפחתי מוסמך
                 </span>
               </figcaption>
             </figure>
             <div ref={v.ioMe} data-io="me" style={{ flex: "999 1 480px", minWidth: "0", display: "flex", flexDirection: "column", gap: "22px" }}>
-              <span style={{ fontSize: "13px", letterSpacing: "0.16em", color: "#7A5C24", fontWeight: "500" }}>
+              <span style={{ fontSize: "14px", color: "#7A5C24", fontWeight: "500" }}>
                 נעים להכיר
               </span>
-              <h2 className="h2 serif" style={{ margin: "0", fontWeight: "300", fontSize: "72px", lineHeight: "1", letterSpacing: "-0.02em" }}>
+              <h2 className="h2 serif" style={{ margin: "0", fontWeight: "300", fontSize: "72px", lineHeight: "1.06", letterSpacing: "-0.02em" }}>
                 אני תומר.
                 <br />
                 <span style={{ fontWeight: "700", color: "#7A5C24" }}>
                   ואני כאן בשביל הסדר.
                 </span>
               </h2>
-              <p style={{ margin: "0", fontSize: "18px", lineHeight: "1.75", color: "#3F4F4A", fontWeight: "300", maxWidth: "560px" }}>
-                אני מלווה משפחות צעירות 1:1, בארבע פגישות – בלי מוצרים למכור ובלי עמלות. המטרה שלי היא שתצאו עם שיטה שעובדת גם בלעדיי.
+              <p style={{ margin: "0", fontSize: "18px", lineHeight: "1.75", color: "#3F4F4A", maxWidth: "560px" }}>
+                אני מלווה משפחות צעירות 1:1, בארבע פגישות – בלי מוצרים למכור ובלי עמלות. המטרה שלי היא שתצאו עם שיטה שעובדת גם בלעדיי.
               </p>
               {v.hasPersonal ? (
                 <>
@@ -2400,10 +2405,10 @@ export default class Home extends React.Component<Record<string, never>, any> {
                     <div style={css(p?.wrap)}>
                       <div className="rcpt">
                         <span style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: "12px" }}>
-                          <span className="serif" style={{ fontSize: "22px", fontWeight: "500" }}>
+                          <span className="serif" style={{ fontSize: "22px", fontWeight: "400" }}>
                             {p?.t}
                           </span>
-                          <span style={{ fontSize: "12px", letterSpacing: "0.12em", color: "#7A5C24" }}>
+                          <span style={{ fontSize: "12px", color: "#7A5C24", fontWeight: "500" }}>
                             {p?.n}
                           </span>
                         </span>
@@ -2429,14 +2434,14 @@ export default class Home extends React.Component<Record<string, never>, any> {
         <section style={{ background: "#F6EFE6", color: "#0B1714" }}>
           <div className="pad sec" style={{ maxWidth: "1280px", margin: "0 auto", padding: "160px 48px" }}>
             <div className="rv" style={{ display: "flex", flexWrap: "wrap", gap: "24px 72px", alignItems: "end", marginBottom: "56px" }}>
-              <h2 className="h2 serif" style={{ flex: "1 1 460px", margin: "0", fontWeight: "300", fontSize: "80px", lineHeight: "0.98", letterSpacing: "-0.02em" }}>
+              <h2 className="h2 serif" style={{ flex: "1 1 460px", margin: "0", fontWeight: "300", fontSize: "80px", lineHeight: "1.06", letterSpacing: "-0.02em" }}>
                 {"מיתוס "}
                 <span style={{ fontWeight: "700", color: "#7A5C24" }}>
                   או עובדה?
                 </span>
               </h2>
-              <p style={{ flex: "1 1 380px", margin: "0", fontSize: "18px", lineHeight: "1.75", color: "#3F4F4A", fontWeight: "300" }}>
-                ארבע אמונות על כסף שכדאי לבדוק מחדש. לחצו על קלף – וגלו מה באמת נכון.
+              <p style={{ flex: "1 1 380px", margin: "0", fontSize: "18px", lineHeight: "1.75", color: "#3F4F4A" }}>
+                ארבע אמונות על כסף שכדאי לבדוק מחדש. לחצו על קלף – וגלו מה באמת נכון.
               </p>
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "18px" }}>
@@ -2444,7 +2449,7 @@ export default class Home extends React.Component<Record<string, never>, any> {
                 <React.Fragment key={$index}>
                   <button className="mcard" onClick={c?.toggle} aria-pressed={c?.pressed} aria-label={c?.aria}>
                     <div className="mback">
-                      <span style={{ fontSize: "13px", letterSpacing: "0.14em", color: "#C9A467" }}>
+                      <span style={{ fontSize: "13px", color: "#C9A467", fontWeight: "500" }}>
                         העובדה
                       </span>
                       <span className="serif" style={{ fontSize: "25px", lineHeight: "1.4", color: "#F3E9DD" }}>
@@ -2458,7 +2463,7 @@ export default class Home extends React.Component<Record<string, never>, any> {
                       </span>
                     </div>
                     <div className="mface" style={css(c?.frontStyle)}>
-                      <span style={{ display: "flex", justifyContent: "space-between", fontSize: "13px", letterSpacing: "0.14em", color: "#7A5C24" }}>
+                      <span style={{ display: "flex", justifyContent: "space-between", fontSize: "13px", color: "#7A5C24", fontWeight: "500" }}>
                         <span>
                           המיתוס
                         </span>
@@ -2486,7 +2491,7 @@ export default class Home extends React.Component<Record<string, never>, any> {
         {/* ================= WHAT I'M NOT: STAMPS ================= */}
         <section style={{ background: "#EFE5D7", color: "#0B1714" }}>
           <div className="pad sec" style={{ maxWidth: "1280px", margin: "0 auto", padding: "160px 48px" }}>
-            <span style={{ fontSize: "13px", letterSpacing: "0.16em", color: "#7A5C24", fontWeight: "500" }}>
+            <span style={{ fontSize: "14px", color: "#7A5C24", fontWeight: "500" }}>
               שקיפות מלאה
             </span>
             <div ref={v.ioNots} data-io="nots" style={{ marginTop: "28px", display: "flex", flexDirection: "column" }}>
@@ -2507,7 +2512,7 @@ export default class Home extends React.Component<Record<string, never>, any> {
                         {" "}
                       </span>
                     </span>
-                    <span style={{ flex: "1 1 300px", fontSize: "17px", lineHeight: "1.7", color: "#3F4F4A", fontWeight: "300" }}>
+                    <span style={{ flex: "1 1 300px", fontSize: "17px", lineHeight: "1.7", color: "#3F4F4A" }}>
                       {n?.text}
                     </span>
                   </div>
@@ -2522,7 +2527,7 @@ export default class Home extends React.Component<Record<string, never>, any> {
           <div className="pad sec" style={{ maxWidth: "1280px", margin: "0 auto", padding: "160px 48px", display: "flex", flexWrap: "wrap", gap: "32px", alignItems: "stretch" }}>
                 <div className="ticket" style={{ flex: "1 1 500px", background: "#C9A467", color: "#0B1714", display: "flex", minHeight: "360px" }}>
                   <div className="tick-body" style={{ flex: "1 1 auto", padding: "52px 60px", display: "flex", flexDirection: "column", gap: "18px", justifyContent: "center" }}>
-                    <span style={{ fontSize: "13px", letterSpacing: "0.2em", fontWeight: "600" }}>
+                    <span style={{ fontSize: "14px", fontWeight: "700" }}>
                       כרטיס מייסדים
                     </span>
                     <h3 className="tick-h serif" style={{ margin: "0", fontWeight: "300", fontSize: "44px", lineHeight: "1.08" }}>
@@ -2537,7 +2542,7 @@ export default class Home extends React.Component<Record<string, never>, any> {
                     </p>
                   </div>
                   <div className="stub" style={{ flex: "0 0 160px", borderRight: "2px dashed rgba(11,23,20,0.45)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "14px", padding: "24px 14px" }}>
-                    <span style={{ fontSize: "13px", letterSpacing: "0.12em" }}>
+                    <span style={{ fontSize: "13px", fontWeight: "500" }}>
                       מקומות
                     </span>
                     <span className="serif" style={{ fontSize: "40px", lineHeight: "1" }}>
@@ -2555,7 +2560,7 @@ export default class Home extends React.Component<Record<string, never>, any> {
         {/* ================= FAQ ================= */}
         <section id="faq" style={{ background: "#F6EFE6", color: "#0B1714" }}>
           <div className="pad sec" style={{ maxWidth: "1280px", margin: "0 auto", padding: "160px 48px", display: "flex", flexWrap: "wrap", gap: "32px 72px" }}>
-            <h2 className="h2 serif rv" style={{ flex: "1 1 340px", margin: "0", fontWeight: "300", fontSize: "80px", lineHeight: "0.98", letterSpacing: "-0.02em" }}>
+            <h2 className="h2 serif rv" style={{ flex: "1 1 340px", margin: "0", fontWeight: "300", fontSize: "80px", lineHeight: "1.06", letterSpacing: "-0.02em" }}>
               {"מה "}
               <span style={{ fontWeight: "700", color: "#7A5C24" }}>
                 שואלים.
@@ -2575,7 +2580,7 @@ export default class Home extends React.Component<Record<string, never>, any> {
                     </button>
                     {f?.open ? (
                       <>
-                        <p style={{ margin: "0", padding: "0 0 28px", fontSize: "17px", lineHeight: "1.8", color: "#3F4F4A", fontWeight: "300", maxWidth: "640px" }}>
+                        <p style={{ margin: "0", padding: "0 0 28px", fontSize: "17px", lineHeight: "1.8", color: "#3F4F4A", maxWidth: "640px" }}>
                           {f?.a}
                         </p>
                       </>
@@ -2590,15 +2595,15 @@ export default class Home extends React.Component<Record<string, never>, any> {
         <section id="meetings" className="meet" style={{ background: "#0B1714", position: "relative" }}>
           <div className="pad sec" style={{ maxWidth: "1280px", margin: "0 auto", padding: "160px 48px" }}>
             <div className="rv" style={{ display: "flex", flexWrap: "wrap", gap: "24px 72px", alignItems: "end", marginBottom: "80px" }}>
-              <h2 className="h2 serif" style={{ flex: "1 1 460px", margin: "0", fontWeight: "300", fontSize: "80px", lineHeight: "0.98", letterSpacing: "-0.02em" }}>
+              <h2 className="h2 serif" style={{ flex: "1 1 460px", margin: "0", fontWeight: "300", fontSize: "80px", lineHeight: "1.06", letterSpacing: "-0.02em" }}>
                 4 פגישות.
                 <br />
                 <span style={{ fontWeight: "700", color: "#C9A467" }}>
-                  ואז – אתם.
+                  ואז – אתם.
                 </span>
               </h2>
-              <p style={{ flex: "1 1 380px", margin: "0", fontSize: "18px", lineHeight: "1.75", color: "#B9C7C1", fontWeight: "300" }}>
-                קו הזהב הוא העט. בכל פגישה הוא עובר אליכם קצת יותר – והטבעת שלכם מתמלאת, עד שאתם מחזיקים כמעט את הכל לבד.
+              <p style={{ flex: "1 1 380px", margin: "0", fontSize: "18px", lineHeight: "1.75", color: "#B9C7C1" }}>
+                קו הזהב הוא העט. בכל פגישה הוא עובר אליכם קצת יותר – והטבעת שלכם מתמלאת, עד שאתם מחזיקים כמעט את הכל לבד.
               </p>
             </div>
             <div style={{ position: "relative" }}>
@@ -2618,13 +2623,13 @@ export default class Home extends React.Component<Record<string, never>, any> {
                           {m?.num}
                         </span>
                       </div>
-                      <span style={{ fontSize: "12px", letterSpacing: "0.12em", color: "#9DB0A8" }}>
+                      <span style={{ fontSize: "12px", color: "#9DB0A8" }}>
                         החלק שלכם בעבודה · המחשה
                       </span>
-                      <h3 className="serif" style={{ margin: "0", fontWeight: "500", fontSize: "26px", lineHeight: "1.2", color: "#F3E9DD" }}>
+                      <h3 className="serif" style={{ margin: "0", fontWeight: "400", fontSize: "26px", lineHeight: "1.2", color: "#F3E9DD" }}>
                         {m?.title}
                       </h3>
-                      <p style={{ margin: "0", fontSize: "15px", lineHeight: "1.75", color: "#B9C7C1", fontWeight: "300" }}>
+                      <p style={{ margin: "0", fontSize: "15px", lineHeight: "1.75", color: "#B9C7C1" }}>
                         {m?.desc}
                       </p>
                       <span style={{ fontSize: "14px", color: "#C9A467", fontWeight: "500" }}>
@@ -2641,7 +2646,7 @@ export default class Home extends React.Component<Record<string, never>, any> {
         <section id="contact" style={{ background: "#C9A467", color: "#0B1714" }}>
           <div className="pad sec" style={{ maxWidth: "1280px", margin: "0 auto", padding: "160px 48px", display: "flex", flexWrap: "wrap", gap: "56px 80px", alignItems: "center" }}>
             <div style={{ flex: "1 1 460px", minWidth: "0", display: "flex", flexDirection: "column", gap: "24px" }}>
-              <h2 className="giant serif" style={{ margin: "0", fontWeight: "300", fontSize: "96px", lineHeight: "0.96", letterSpacing: "-0.025em" }}>
+              <h2 className="giant serif" style={{ margin: "0", fontWeight: "300", fontSize: "96px", lineHeight: "1.04", letterSpacing: "-0.025em" }}>
                 20 דקות.
                 <br />
                 3 נקודות.
@@ -2659,7 +2664,7 @@ export default class Home extends React.Component<Record<string, never>, any> {
                     <img loading="lazy" decoding="async" src="/tomer.jpg" alt="" style={{ display: "block", width: "100%", height: "116%", objectFit: "cover", objectPosition: "50% 0%" }} />
                   </span>
                   <span style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
-                    <span style={{ color: "#F3E9DD", fontWeight: "600", fontSize: "15px" }}>
+                    <span style={{ color: "#F3E9DD", fontWeight: "500", fontSize: "15px" }}>
                       תומר קריגל
                     </span>
                     <span style={{ color: "#9DB0A8", fontSize: "12px" }}>
@@ -2705,7 +2710,7 @@ export default class Home extends React.Component<Record<string, never>, any> {
                       <>
                         <div style={{ border: "1px dashed #C9A467", padding: "14px 16px", display: "flex", flexDirection: "column", gap: "10px" }}>
                           <span style={{ fontSize: "13px", color: "#C9A467" }}>
-                            הבלגן שהוספתם למעלה – ייכנס להודעה:
+                            הבלגן שהוספתם למעלה – ייכנס להודעה:
                           </span>
                           <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
                             {(v.mineList || []).map((mi, $index) => (
@@ -2757,7 +2762,7 @@ export default class Home extends React.Component<Record<string, never>, any> {
         {/* ================= FOOTER ================= */}
         <footer style={{ background: "#060E0C", color: "#9DB0A8" }}>
           <div className="pad" style={{ maxWidth: "1280px", margin: "0 auto", padding: "88px 48px 36px", display: "flex", flexDirection: "column", gap: "44px" }}>
-            <span className="giant serif" style={{ fontWeight: "300", fontSize: "128px", lineHeight: "0.92", letterSpacing: "-0.03em", color: "#F3E9DD" }}>
+            <span className="giant serif" style={{ fontWeight: "300", fontSize: "128px", lineHeight: "1", letterSpacing: "-0.03em", color: "#F3E9DD" }}>
               קריגל
               <br />
               <span style={{ fontWeight: "700", color: "#C9A467" }}>
