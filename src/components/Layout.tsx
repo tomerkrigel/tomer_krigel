@@ -28,7 +28,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="max-w-[1280px] mx-auto px-5 sm:px-12 py-3 sm:py-4 flex items-center justify-between gap-4">
           <Link to="/" className="flex items-center gap-3">
             <KrigelLogo className="w-[38px] h-[38px] sm:w-[46px] sm:h-[46px]" />
-            <span className="font-serif text-[19px] sm:text-[22px] font-medium text-[#F3E9DD]">קריגל פיננסיים</span>
+            <span className="font-serif text-[19px] sm:text-[22px] font-normal text-[#F3E9DD]">קריגל פיננסיים</span>
           </Link>
           <nav className="flex items-center gap-7">
             {nav.map((item) => (
@@ -52,7 +52,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
       <footer className="bg-[#060E0C] text-[#9DB0A8]">
         <div className="max-w-[1280px] mx-auto px-5 sm:px-12 pt-16 sm:pt-20 pb-9 flex flex-col gap-10">
-          <span className="font-serif font-light text-[52px] sm:text-[88px] leading-[0.92] tracking-[-0.03em] text-[#F3E9DD]">
+          <span className="font-serif font-light text-[52px] sm:text-[88px] leading-none tracking-[-0.03em] text-[#F3E9DD]">
             קריגל
             <br />
             <span className="font-bold text-[#C9A467]">פיננסיים.</span>

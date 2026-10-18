@@ -13,8 +13,8 @@ function LegalShell({ title, children }: { title: string; children: React.ReactN
         <Link to="/" className="inline-flex items-center gap-1 text-sm text-[#7A5C24] hover:text-[#0B1714] transition-colors mb-6">
           <ChevronRight size={16} /> חזרה לדף הבית
         </Link>
-        <h1 className="font-serif font-light text-4xl sm:text-6xl leading-none tracking-tight text-[#0B1714] mb-10">{title}</h1>
-        <div className="space-y-6 text-slate-700 leading-relaxed text-sm sm:text-base font-light [&_h2]:font-heading [&_h2]:font-bold [&_h2]:text-[#2E4A43] [&_h2]:text-lg [&_h2]:mt-8 [&_h2]:mb-2">
+        <h1 className="font-serif font-light text-4xl sm:text-6xl leading-[1.1] tracking-tight text-[#0B1714] mb-10">{title}</h1>
+        <div className="space-y-6 text-slate-700 leading-relaxed text-pretty text-sm sm:text-base [&_h2]:font-heading [&_h2]:font-bold [&_h2]:text-[#2E4A43] [&_h2]:text-lg [&_h2]:mt-8 [&_h2]:mb-2">
           {children}
         </div>
         <p className="mt-12 text-xs text-slate-400">עודכן לאחרונה: יולי 2026</p>

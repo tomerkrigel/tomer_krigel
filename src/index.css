@@ -1,9 +1,8 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700;800&family=Heebo:wght@300;400;500;700;800;900&display=swap');
 
 @theme {
-  --font-sans: "Heebo", "Assistant", ui-sans-serif, system-ui, sans-serif;
-  --font-heading: "Assistant", "Heebo", sans-serif;
+  --font-sans: "Heebo", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Heebo", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Frank Ruhl Libre", Georgia, serif;
   
   --color-primary: #2E4A43;

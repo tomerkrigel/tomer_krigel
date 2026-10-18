@@ -1,4 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <circle cx="32" cy="32" r="31" fill="#1B322C" stroke="#C9AA67" stroke-width="2"/>
-  <text x="32" y="43" font-family="Georgia, serif" font-weight="bold" font-size="34" fill="#F3E9DD" text-anchor="middle">K</text>
+  <!-- The same serif K as the logo badge, as shapes (no font needed) -->
+  <g transform="translate(-18 -8) scale(.5)" fill="#F3E9DD">
+    <path d="M 60 44 L 92 44 L 92 47 C 86 47, 84 49, 84 54 L 84 106 C 84 111, 86 113, 92 113 L 92 116 L 60 116 L 60 113 C 66 113, 68 111, 68 106 L 68 54 C 68 49, 66 47, 60 47 Z"/>
+    <path d="M 84 74 L 119 44 L 133 44 L 133 47 C 128 47, 126 49, 125 52 L 91 82 Z"/>
+    <path d="M 97 76 L 113 113 C 113 113, 109 113, 107 113 L 107 116 L 140 116 L 140 113 C 133 113, 127 107, 121 98 L 103 76 Z"/>
+  </g>
 </svg>
